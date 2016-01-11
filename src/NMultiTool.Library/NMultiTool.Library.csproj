@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{88BBC1F8-F0E9-4259-9357-4E3DA770A6D6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NMultiTool.Library</RootNamespace>
+    <AssemblyName>NMultiTool.Library</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <BinDirectory Condition=" '$(BinDirectory)' == ''">..\..\bin</BinDirectory>
+    <BaseIntermediateOutputPath>$(BinDirectory)\obj\$(AssemblyName)\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(MSBuildProjectDirectory)\..\..\bin\$(Configuration)\$(AssemblyName)</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(MSBuildProjectDirectory)\..\..\bin\$(Configuration)\$(AssemblyName)</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging, Version=3.3.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\..\tools\NuGetPackages\Common.Logging.3.3.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\..\tools\NuGetPackages\Common.Logging.Core.3.3.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.XmlTransform">
+      <HintPath>..\..\tools\NuGetPackages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
+    </Reference>
+    <Reference Include="NuGet.Core, Version=2.9.0.729, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\tools\NuGetPackages\NuGet.Core.2.9.0\lib\net40-Client\NuGet.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BootStrap\ILoggingConfiguration.cs" />
+    <Compile Include="BootStrap\LoggingConfiguration.cs" />
+    <Compile Include="Commands\CreateNugetSpec\INuGetSpec.cs" />
+    <Compile Include="Commands\CreateNugetSpec\NuGetSpec.cs" />
+    <Compile Include="Commands\FindDuplicateFiles\DuplicateFileInfo.cs" />
+    <Compile Include="Commands\FindDuplicateFiles\DuplicateFilesCompare.cs" />
+    <Compile Include="Commands\FindDuplicateFiles\FindDuplicateFilesCommandProvider.cs" />
+    <Compile Include="Commands\FindDuplicateFiles\IFindDuplicateFilesCommandProvider.cs" />
+    <Compile Include="Commands\Folder2Wxs\Folder2Wxs.cs" />
+    <Compile Include="Commands\Folder2Wxs\IdFromNameGenerator.cs" />
+    <Compile Include="Commands\Folder2Wxs\IFolder2Wxs.cs" />
+    <Compile Include="Commands\Folder2Wxs\IIdFromNameGenerator.cs" />
+    <Compile Include="Commands\Folder2Wxs\IRandomNumberGenerator.cs" />
+    <Compile Include="Commands\Folder2Wxs\RandomNumberGenerator.cs" />
+    <Compile Include="Commands\InstallUtil\FolderFileSearcher.cs" />
+    <Compile Include="Commands\InstallUtil\IFolderFileSearcher.cs" />
+    <Compile Include="Commands\InstallUtil\InstallAction.cs" />
+    <Compile Include="Commands\InstallUtil\IInstallUtil.cs" />
+    <Compile Include="Commands\InstallUtil\InstallUtil.cs" />
+    <Compile Include="Common\ToDo.cs" />
+    <Compile Include="Common\CommandsBase.cs" />
+    <Compile Include="Common\SingletonAttribute.cs" />
+    <Compile Include="Common\ToDoPriority.cs" />
+    <Compile Include="Common\Xml\IXmlHelper.cs" />
+    <Compile Include="Common\Xml\XmlHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
