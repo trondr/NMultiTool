@@ -14,18 +14,23 @@ namespace NMultiTool.Library.Commands.Folder2Wxs
         }
 
         public string GetId(string name, string postfix)
-        {            
-            var normalizeName = name.Replace('&', '_')
+        {
+            var normalizeName = name
+                .Replace('&', '_')
                 .Replace('%', '_')
                 .Replace('.', '_')
                 .Replace(' ', '_')
                 .Replace('-', '_')
                 .Replace('+', '_')
-                .Replace('·','_')
+                .Replace('·', '_')
                 .Replace("___", "_")
                 .Replace("__", "_")
                 .Replace("(", string.Empty)
-                .Replace(")", string.Empty);                
+                .Replace(")", string.Empty)
+                .Replace("[", string.Empty)
+                .Replace("]", string.Empty)
+                .Replace("{", string.Empty)
+                .Replace("}", string.Empty);
             if (normalizeName.Length > 40)
             {
                 normalizeName = normalizeName.Substring(0, 40);
