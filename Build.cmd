@@ -1,5 +1,6 @@
 @ECHO OFF
 Set ProductName=NMultiTool
+Set SolutionName=NMultiTool
 
 IF EXIST "%VSDEVCMD%" goto Build
 IF EXIST "%MSBUILDPATH%" goto Build
@@ -19,12 +20,11 @@ Set Path=%Path%;%MSBUILDPATH%
 
 :Build
 Echo Building %ProductName%...
-nuget.exe restore %ProductName%.sln
-msbuild.exe %ProductName%.build %1 %2 %3 %4 %5 %6 %7 %8 %9
+nuget.exe restore %SolutionName%.sln
+msbuild.exe %SolutionName%.build %1 %2 %3 %4 %5 %6 %7 %8 %9
 Set BuildErrorLevel=%ERRORLEVEL%
 IF %BuildErrorLevel%==0 Set BuildMessage=Sucessfully build %ProductName%
 IF NOT %BuildErrorLevel% == 0 Set BuildMessage=Failed to build %ProductName%
 
 :End
 Echo %BuildMessage%
-

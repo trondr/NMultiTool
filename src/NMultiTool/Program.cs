@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Threading;
 using Common.Logging;
 using NCmdLiner;
 using NCmdLiner.Exceptions;
-using NMultiTool.Library.Common;
-using NMultiTool.Wireup;
+using NMultiTool.Infrastructure;
+using NMultiTool.Library.Infrastructure;
 
 namespace NMultiTool
 {
-    public class Program
+    class Program
     {
-        private static int Main(string[] args)
+        [STAThread]
+        static int Main(string[] args)
         {
             var returnValue = 0;
             try
@@ -18,11 +20,12 @@ namespace NMultiTool
                 var applicationInfo = BootStrapper.Container.Resolve<IApplicationInfo>();
                 try
                 {
-                    applicationInfo.Authors = @"github.com.trondr";
+                    applicationInfo.Authors = @"trondr@outlook.com";
                     // ReSharper disable once CoVariantArrayConversion
-                    object[] commandTargets = BootStrapper.Container.ResolveAll<CommandsBase>();
-                    logger.InfoFormat("Start: {0} ({1}). Command line: {2}", applicationInfo.Name, applicationInfo.Version, Environment.CommandLine);
-                    return CmdLinery.Run(commandTargets, args, applicationInfo, new NotepadMessenger());
+                    object[] commandTargets = BootStrapper.Container.ResolveAll<CommandDefinition>();
+                    logger.InfoFormat("Start: {0}.{1}. Command line: {2}", applicationInfo.Name, applicationInfo.Version, Environment.CommandLine);                    
+                    returnValue = CmdLinery.Run(commandTargets, args, applicationInfo, BootStrapper.Container.Resolve<IMessenger>());
+                    return returnValue;
                 }
                 catch (MissingCommandException ex)
                 {
@@ -36,16 +39,16 @@ namespace NMultiTool
                 }
                 finally
                 {
-                    logger.InfoFormat("Stop: {0} ({1}). Return value: {2}", applicationInfo.Name, applicationInfo.Version, returnValue);
+                    logger.InfoFormat("Stop: {0}.{1}. Return value: {2}", applicationInfo.Name, applicationInfo.Version, returnValue);
 #if DEBUG
-                    Console.WriteLine("Press ENTER...");
-                    Console.ReadLine();
+                    System.Console.WriteLine("Terminating in 5 seconds...");
+                    Thread.Sleep(5000);
 #endif
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Fatal error when wiring up the application.{0}{1}", Environment.NewLine, ex);
+                System.Console.WriteLine("Fatal error when wiring up the application.{0}{1}", Environment.NewLine, ex);
                 returnValue = 3;
             }
             return returnValue;

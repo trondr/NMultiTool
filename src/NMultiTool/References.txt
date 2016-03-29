@@ -1,0 +1,17 @@
+﻿Exe:
+----
+Install-Package NCmdLiner
+Install-Package Common.Logging -Version 3.3.1.0
+Install-Package Common.Logging.Log4Net1213 -Version 3.3.1.0
+Install-Package Castle.Windsor -Version 3.3.1.0
+Install-Package log4Net -Version 1.2.15.0
+
+Library:
+----
+Install-Package Common.Logging -Version 3.3.1.0
+
+Library.Tests:
+----------
+Install-Package Common.Logging -Version 3.3.1.0
+Install-Package NUnit
+Install-Package RhinoMocks

@@ -15,13 +15,13 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyDescription("NMultiTool provides commands useful during build or install of an application or " +
-    "library.")]
-[assembly: AssemblyCompany("github.com/trondr")]
+    "library")]
+[assembly: AssemblyCompany("github.trondr")]
 [assembly: AssemblyProduct("NMultiTool")]
-[assembly: AssemblyCopyright("Copyright © github.com.trondr 2013-2016")]
-[assembly: CLSCompliant(true)]
-[assembly: AssemblyInformationalVersion("1.0.16044.c5a22ff")]
-[assembly: AssemblyVersion("1.0.16044.43")]
-[assembly: AssemblyFileVersion("1.0.16044.43")]
+[assembly: AssemblyCopyright("Copyright © github.trondr 2016")]
+[assembly: CLSCompliant(false)]
+[assembly: AssemblyInformationalVersion("1.0.16089.44.07433b1")]
+[assembly: AssemblyVersion("1.0.16089.44")]
+[assembly: AssemblyFileVersion("1.0.16089.44")]
 
 

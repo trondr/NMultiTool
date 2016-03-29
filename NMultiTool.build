@@ -3,11 +3,11 @@
 
   <!--Set product properties and paths-->
   
-  <PropertyGroup>
+  <PropertyGroup>    
     <ProductName>NMultiTool</ProductName>
-    <ProductCompany>github.com/trondr</ProductCompany>
-    <ProductDescription>NMultiTool provides commands useful during build or install of an application or library.</ProductDescription>
-    <ProductCopyright>Copyright &#169; github.com.trondr 2013-$([System.DateTime]::Now.Year)</ProductCopyright>
+    <ProductCompany>github.trondr</ProductCompany>
+    <ProductDescription>NMultiTool provides commands useful during build or install of an application or library</ProductDescription>
+    <ProductCopyright>Copyright &#169; github.trondr $([System.DateTime]::Now.Year)</ProductCopyright>
     <ProductProjectName>$(ProductName)</ProductProjectName>
 
     <ShortYear>$([System.DateTime]::Now.ToString(`yy`))</ShortYear>
@@ -21,10 +21,10 @@
     <SrcDirectory>$(MSBuildProjectDirectory)\src</SrcDirectory>
     <ToolsDirectory>$(MSBuildProjectDirectory)\tools</ToolsDirectory>
   
-    <NunitVersion>2.6.3</NunitVersion>
+    <NunitVersion>2.6.4</NunitVersion>
     
   </PropertyGroup>
-  
+
   <!--
 		Include MSBuild Community Tasks.
 	-->
@@ -43,10 +43,29 @@
   </Choose>
   <Import Project="$(ToolsDirectory)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" Condition=" '$(MSBuildCommunityTasksAvailable)' == 'true' "/>
 
-  <!-- Verify that NUnit is available-->  
+    <!--
+		Include MSBuild Custom Tasks.
+	-->
+  <Choose>
+    <When Condition="Exists('$(ToolsDirectory)\MSBuildCustomTasks\MSBuildCustomTasks.Targets')">
+      <PropertyGroup>
+        <MSBuildCustomTasksAvailable>true</MSBuildCustomTasksAvailable>
+		<MSBuildCustomTasksPath>$(ToolsDirectory)\MSBuildCustomTasks</MSBuildCustomTasksPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <MSBuildCustomTasksAvailable>false</MSBuildCustomTasksAvailable>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  <Import Project="$(ToolsDirectory)\MSBuildCustomTasks\MSBuildCustomTasks.Targets" Condition=" '$(MSBuildCustomTasksAvailable)' == 'true' "/>
+  
+  <!-- Verify that NUnit is available-->
+  
   <Choose>
     <When Condition="Exists('$(ToolsDirectory)\NUnit\nunit.exe')">
-      <PropertyGroup>        
+      <PropertyGroup>
         <NUnitIsAvailable>true</NUnitIsAvailable>
       </PropertyGroup>
     </When>
@@ -56,85 +75,180 @@
       </PropertyGroup>
     </Otherwise>
   </Choose>
- 
+
+  <!-- Verify if current solution is in a .git repository-->
+
+  <Choose>
+    <When Condition="Exists('$(MSBuildProjectDirectory)\.git')">
+      <PropertyGroup>
+        <IsGitRepository>true</IsGitRepository>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <IsGitRepository>false</IsGitRepository>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
   <ItemGroup>
-    <DefaultExclude Include="$(SrcDirectory)\**\.hg\**" />
-    <DefaultExclude Include="$(SrcDirectory)\**\.git\**" />
-    <DefaultExclude Include="$(SrcDirectory)\**\.svn\**" />
-    <DefaultExclude Include="$(SrcDirectory)\**\bin\**" />
-    <DefaultExclude Include="$(SrcDirectory)\**\obj\**" />
-    <DefaultExclude Include="$(SrcDirectory)\**\Release\**" />
-    <DefaultExclude Include="$(SrcDirectory)\**\Debug\**" />
-    <DefaultExclude Include="$(SrcDirectory)\**\Test\**" />
-    <DefaultExclude Include="$(SrcDirectory)\**\TestResults\**" />
-    <DefaultExclude Include="$(SrcDirectory)\**\doc\**" />
-    <DefaultExclude Include="$(SrcDirectory)\**\www\**" />
-    <DefaultExclude Include="$(SrcDirectory)\**\*.user" />
-    <DefaultExclude Include="$(SrcDirectory)\**\*.suo" />
-    <DefaultExclude Include="$(SrcDirectory)\**\*.zip" />
-    <DefaultExclude Include="$(SrcDirectory)\**\*.txt" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\.hg\**" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\.git\**" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\.svn\**" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\bin\**" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\obj\**" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\Release\**" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\Debug\**" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\Test\**" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\TestResults\**" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\doc\**" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\www\**" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\*.user" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\*.suo" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\*.zip" />    
+	<DefaultExclude Include="$(MSBuildProjectDirectory)\**\TestResult.xml" />
   </ItemGroup>
 
   <ItemGroup>
     <SourceFiles Include="$(SrcDirectory)\**\*.*" Exclude="@(DefaultExclude)" />
+	<SourceFiles Include="$(MSBuildProjectDirectory)\*.*" Exclude="@(DefaultExclude)" />
+	<SourceFiles Include="$(ToolsDirectory)\**\*.*" Exclude="@(DefaultExclude)" />
   </ItemGroup>
-
-  <Target Name="Version">
+  
+  <Target Name="GitHashInit">
+    <CreateProperty Value="unknown">
+      <Output TaskParameter="Value" PropertyName="RevisionHash" />
+    </CreateProperty>
+	<Message Text="Initial RevisionHash=$(RevisionHash)" Importance="normal" />
+  </Target>
+  
+  <Target Name="GitHash" Condition=" '$(IsGitRepository)' == 'true' " DependsOnTargets="GitHashInit">
     <GitVersion LocalPath="$(MSBuildProjectDirectory)" Timeout="5000">
       <Output TaskParameter="CommitHash" PropertyName="RevisionHash" />
     </GitVersion>
-    <XmlRead XPath="/root/property[@name='revision']/@value" XmlFileName="revision.xml">
+	<Message Text="Calculated RevisionHash=$(RevisionHash)" Importance="normal" />
+  </Target>
+
+  <Target Name="UpdateRevisionVersion">
+    <XmlRead XPath="/version/property[@name='revision']/@value" XmlFileName="version.xml">
       <Output TaskParameter="Value" PropertyName="Revision" />
     </XmlRead>
     <Math.Add Numbers="$(Revision);1">
       <Output TaskParameter="Result" PropertyName="Revision" />
     </Math.Add>
-    <XmlUpdate XPath="/root/property[@name='revision']/@value" XmlFileName="revision.xml" Value="$(Revision)"/>
+    <XmlUpdate XPath="/version/property[@name='revision']/@value" XmlFileName="version.xml" Value="$(Revision)"/>
+  </Target>
+
+  <Target Name="UpdateBuildVersion">
+    <XmlRead XPath="/version/property[@name='build']/@value" XmlFileName="version.xml">
+      <Output TaskParameter="Value" PropertyName="Build" />
+    </XmlRead>
+    <Math.Add Numbers="0;$(ShortYear)$(DayOfYear)">
+      <Output TaskParameter="Result" PropertyName="Build" />
+    </Math.Add>
+    <XmlUpdate XPath="/version/property[@name='build']/@value" XmlFileName="version.xml" Value="$(Build)"/>
+  </Target>
+  
+  <Target Name="UpdateVersion" DependsOnTargets="GitHash;UpdateRevisionVersion;UpdateBuildVersion">
+    <XmlRead XPath="/version/property[@name='major']/@value" XmlFileName="version.xml">
+      <Output TaskParameter="Value" PropertyName="Major" />
+    </XmlRead>
+    <XmlRead XPath="/version/property[@name='minor']/@value" XmlFileName="version.xml">
+      <Output TaskParameter="Value" PropertyName="Minor" />
+    </XmlRead>
     <CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)">
       <Output TaskParameter="Value" PropertyName="AssemblyVersion" />
     </CreateProperty>
     <Message Text="AssemblyVersion: $(AssemblyVersion)"/>
-    <AssemblyInfo CodeLanguage="CS"
-     OutputFile="$(SrcDirectory)\$(ProductName)\Properties\AssemblyInfo.cs"
-     AssemblyDescription="$(ProductDescription)"
-     AssemblyCompany="$(ProductCompany)"
-     AssemblyProduct="$(ProductName)"
-     AssemblyCopyright="$(ProductCopyright)"
-     CLSCompliant="true"
-	   AssemblyInformationalVersion="$(Major).$(Minor).$(Build).$(RevisionHash)"
-     AssemblyVersion="$(AssemblyVersion)"
-     AssemblyFileVersion="$(AssemblyVersion)"
-	  />
-	<AssemblyInfo CodeLanguage="CS"
-     OutputFile="$(SrcDirectory)\$(ProductName).Library\Properties\AssemblyInfo.cs"
-     AssemblyDescription="$(ProductDescription)"
-     AssemblyCompany="$(ProductCompany)"
-     AssemblyProduct="$(ProductName).Library"
-     AssemblyCopyright="$(ProductCopyright)"
-     CLSCompliant="true"
-	 AssemblyInformationalVersion="$(Major).$(Minor).$(Build).$(RevisionHash)"
-     AssemblyVersion="$(AssemblyVersion)"
-     AssemblyFileVersion="$(AssemblyVersion)"
-	  />
   </Target>
 
+  <Target Name="Version" DependsOnTargets="GitHash">
+    <XmlRead XPath="/version/property[@name='major']/@value" XmlFileName="version.xml">
+      <Output TaskParameter="Value" PropertyName="Major" />
+    </XmlRead>
+    <XmlRead XPath="/version/property[@name='minor']/@value" XmlFileName="version.xml">
+      <Output TaskParameter="Value" PropertyName="Minor" />
+    </XmlRead>
+    <XmlRead XPath="/version/property[@name='build']/@value" XmlFileName="version.xml">
+      <Output TaskParameter="Value" PropertyName="Build" />
+    </XmlRead>
+    <XmlRead XPath="/version/property[@name='revision']/@value" XmlFileName="version.xml">
+      <Output TaskParameter="Value" PropertyName="Revision" />
+    </XmlRead>
+    <CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)">
+      <Output TaskParameter="Value" PropertyName="AssemblyVersion" />
+    </CreateProperty>
+    <CreateProperty Value="$(Major)_$(Minor)_$(Build)_$(Revision)">
+      <Output TaskParameter="Value" PropertyName="AssemblyVersionU" />
+    </CreateProperty>
+    <AssemblyInfo CodeLanguage="CS"
+       OutputFile="$(SrcDirectory)\NMultiTool\Properties\AssemblyInfo.cs"
+       AssemblyDescription="$(ProductDescription)"
+       AssemblyCompany="$(ProductCompany)"
+       AssemblyProduct="NMultiTool"
+       AssemblyCopyright="$(ProductCopyright)"
+       CLSCompliant="false"
+       AssemblyInformationalVersion="$(Major).$(Minor).$(Build).$(Revision).$(RevisionHash)"
+       AssemblyVersion="$(AssemblyVersion)"
+       AssemblyFileVersion="$(AssemblyVersion)"
+	  />
+	  
+	<AssemblyInfo CodeLanguage="CS"
+       OutputFile="$(SrcDirectory)\NMultiTool.Gui\Properties\AssemblyInfo.cs"
+       AssemblyDescription="$(ProductDescription)"
+       AssemblyCompany="$(ProductCompany)"
+       AssemblyProduct="NMultiTool.Gui"
+       AssemblyCopyright="$(ProductCopyright)"
+       CLSCompliant="false"
+       AssemblyInformationalVersion="$(Major).$(Minor).$(Build).$(Revision).$(RevisionHash)"
+       AssemblyVersion="$(AssemblyVersion)"
+       AssemblyFileVersion="$(AssemblyVersion)"
+	  />
+	  
+    <AssemblyInfo CodeLanguage="CS"
+       OutputFile="$(SrcDirectory)\NMultiTool.Library\Properties\AssemblyInfo.cs"
+       AssemblyDescription="$(ProductDescription)"
+       AssemblyCompany="$(ProductCompany)"
+       AssemblyProduct="NMultiTool.Library"
+       AssemblyCopyright="$(ProductCopyright)"
+       CLSCompliant="false"
+       AssemblyInformationalVersion="$(Major).$(Minor).$(Build).$(Revision).$(RevisionHash)"
+       AssemblyVersion="$(AssemblyVersion)"
+       AssemblyFileVersion="$(AssemblyVersion)"
+	  />
+
+    <AssemblyInfo CodeLanguage="CS"
+      OutputFile="$(SrcDirectory)\NMultiTool.Tests\Properties\AssemblyInfo.cs"
+      AssemblyDescription="$(ProductDescription)"
+      AssemblyCompany="$(ProductCompany)"
+      AssemblyProduct="NMultiTool.Tests"
+      AssemblyCopyright="$(ProductCopyright)"
+      CLSCompliant="false"
+      AssemblyInformationalVersion="$(Major).$(Minor).$(Build).$(Revision).$(RevisionHash)"
+      AssemblyVersion="$(AssemblyVersion)"
+      AssemblyFileVersion="$(AssemblyVersion)"
+	  />
+	    	  
+  </Target>
+  
   <!--Compile-->
   
-  <Target Name="Compile" DependsOnTargets="Version" >
-    <MSBuild Projects="$(SrcDirectory)\$(ProductName).Library\$(ProductName).Library.csproj" Properties="Configuration=Release;" />
-    <MSBuild Projects="$(SrcDirectory)\$(ProductName)\$(ProductName).csproj" Properties="Configuration=Release;" />
+  <Target Name="Compile" DependsOnTargets="Version">
+    <MSBuild Projects="$(SrcDirectory)\NMultiTool.Library\NMultiTool.Library.csproj" Properties="Configuration=Release;" />
+    <MSBuild Projects="$(SrcDirectory)\NMultiTool\NMultiTool.csproj" Properties="Configuration=Release;" />
+	<MSBuild Projects="$(SrcDirectory)\NMultiTool.Gui\NMultiTool.Gui.csproj" Properties="Configuration=Release;" />
   </Target>
 
   <Target Name="CompileTests" DependsOnTargets="Compile">
-    <MSBuild Projects="$(SrcDirectory)\$(ProductName).Library.Tests\$(ProductName).Library.Tests.csproj" Properties="Configuration=Release"/>
+    <MSBuild Projects="$(SrcDirectory)\NMultiTool.Tests\NMultiTool.Tests.csproj" Properties="Configuration=Release"/>
   </Target>
 
   <!--Prepare for test-->
   
   <Target Name="DownloadNunit" Condition=" '$(NUnitIsAvailable)' == 'false' ">
-    <MakeDir Directories="$(BinDirectory)\Download"/>
     <Message Text="Downloading NUnit..." Importance="normal" />
-    <WebDownload FileUri="http://launchpad.net/nunitv2/trunk/2.6.3/+download/NUnit-$(NunitVersion).zip" FileName="$(BinDirectory)\Download\NUnit-$(NunitVersion).zip" />
+	<MakeDir Directories="$(BinDirectory)\Download"/>
+    <WebDownload FileUri="http://github.com/nunit/nunitv2/releases/download/$(NunitVersion)/NUnit-$(NunitVersion).zip" FileName="$(BinDirectory)\Download\NUnit-$(NunitVersion).zip" />
     <Message Text="Extracting NUnit..." Importance="normal" />
     <Unzip ZipFileName="$(BinDirectory)\Download\NUnit-$(NunitVersion).zip" TargetDirectory="$(BinDirectory)\Download"/>
     <ItemGroup>
@@ -148,32 +262,93 @@
   </Target>
 
   <!-- Run Unit tests -->
-  
-  <Target Name="Tests" DependsOnTargets="CompileTests;DownloadNunit">
-    <CreateItem Include="$(BinDirectory)\Release\$(ProductName).Library.Tests\$(ProductName).Library.Tests.dll">
+  <Target Name="UnitTests" DependsOnTargets="CompileTests;DownloadNunit">
+    <CreateItem Include="$(BinDirectory)\Release\NMultiTool.Tests\NMultiTool.Tests.dll">
       <Output TaskParameter="Include" ItemName="TestAssembly" />
     </CreateItem>
 
-    <NUnit Assemblies="@(TestAssembly)" IncludeCategory="UnitTests;IntegrationTests" ToolPath="$(ToolsDirectory)\NUnit"/>
+    <NUnit Assemblies="@(TestAssembly)" IncludeCategory="UnitTests" ToolPath="$(ToolsDirectory)\NUnit"/>
   </Target>
 
+  <Target Name="IntegrationTests" DependsOnTargets="CompileTests;DownloadNunit">
+    <CreateItem Include="$(BinDirectory)\Release\NMultiTool.Tests\NMultiTool.Tests.dll">
+      <Output TaskParameter="Include" ItemName="TestAssembly" />
+    </CreateItem>
+    <NUnit Assemblies="@(TestAssembly)" IncludeCategory="IntegrationTests" ToolPath="$(ToolsDirectory)\NUnit"/>
+  </Target>
+  
+  <!-- Run integration tests under the security context of a user member of a privileged group -->
+  <Target Name="AdminUserIntegrationTests" DependsOnTargets="CompileTests;DownloadNunit">
+    <RunAsUser UserName="jenny" 
+               Password="TestPw.19" 
+               Domain="$(USERDOMAIN)" 
+               FileName="$(ToolsDirectory)\NUnit\nunit-console.exe" 
+               Arguments="/nologo &quot;$(BinDirectory)\Release\NMultiTool.Tests\NMultiTool.Tests.dll&quot; /include=AdminUserIntegrationTests"/>    
+  </Target>
+
+  <!-- Run integration tests under the security context of a user NOT member of a privileged group -->
+  <Target Name="StandardUserIntegrationTests" DependsOnTargets="CompileTests;DownloadNunit">
+    <RunAsUser UserName="jim"
+               Password="TestPw.19"
+               Domain="$(USERDOMAIN)"
+               FileName="$(ToolsDirectory)\NUnit\nunit-console.exe"
+               Arguments="/nologo &quot;$(BinDirectory)\Release\NMultiTool.Tests\NMultiTool.Tests.dll&quot; /include=StandardUserIntegrationTests"/>
+  </Target>
+
+  <Target Name="CompileSetup" DependsOnTargets="UnitTests">
+    <MSBuild Projects="$(SrcDirectory)\NMultiTool.Setup\NMultiTool.Setup.wixproj" Properties="Configuration=Release"/>    
+  </Target>
+  
   <ItemGroup>
     <ReleaseFiles Include="$(BinDirectory)\Release\$(ProductName)\**\*.exe" Exclude="$(BinDirectory)\Release\$(ProductName)\**\Libs\**" />
     <ReleaseFiles Include="$(BinDirectory)\Release\$(ProductName)\**\*.dll" Exclude="$(BinDirectory)\Release\$(ProductName)\**\Libs\**" />
     <ReleaseFiles Include="$(BinDirectory)\Release\$(ProductName)\**\*.pdb" Exclude="$(BinDirectory)\Release\$(ProductName)\**\Libs\**" />
     <ReleaseFiles Include="$(BinDirectory)\Release\$(ProductName)\**\*.config" Exclude="$(BinDirectory)\Release\$(ProductName)\**\Libs\**" />
   </ItemGroup>
+  
+  <Target Name="Deploy" DependsOnTargets="CompileSetup">
     
-  <Target Name="Deploy" DependsOnTargets="Tests">
     <Zip Files="@(ReleaseFiles)"
          WorkingDirectory="$(BinDirectory)\Release\$(ProductName)"
-         ZipFileName="$(BinDirectory)\Release\$(ProductProjectName).$(AssemblyVersion).zip"
+         ZipFileName="$(BinDirectory)\Release\NMultiTool.$(AssemblyVersion).zip"
          ZipLevel="9"
          />
-    <Message Text="$(ProductName) relase zip complete" Importance="normal" />
+    <Message Text="NMultiTool.$(AssemblyVersion) relase zip complete" Importance="normal" />
+
+   <ItemGroup>
+      <SetupFiles Include="$(BinDirectory)\Release\NMultiTool.Setup\en-us\NMultiTool.$(AssemblyVersion).msi" />
+   </ItemGroup>
+ 	
+    <Zip Files="@(SetupFiles)"
+         WorkingDirectory="$(BinDirectory)\Release\NMultiTool.Setup\en-us"
+         ZipFileName="$(BinDirectory)\Release\NMultiTool.$(AssemblyVersion).msi.zip"
+         ZipLevel="9"
+         />
+    <Message Text="NMultiTool.$(AssemblyVersion).msi zip complete" Importance="normal" />
+
+    <Zip Files="@(SourceFiles)"
+         WorkingDirectory="$(MSBuildProjectDirectory)"
+         ZipFileName="$(BinDirectory)\Release\NMultiTool.Source.$(AssemblyVersion).zip"
+         ZipLevel="9"
+         />
+    <Message Text="NMultiTool.Source.$(AssemblyVersion) zip complete" Importance="normal" />    
+	
+	  <ResolveScriptInstallPackage
+      ScriptInstallPackageSourcePath="$(SrcDirectory)\github.trondr NMultiTool"
+      ScriptInstallPackageTargetPath="$(BinDirectory)\Release\github.trondr NMultiTool $(AssemblyVersion)"
+      SourceMsiFile="$(BinDirectory)\Release\NMultiTool.Setup\en-us\NMultiTool.$(AssemblyVersion).msi"
+      TargetMsiFile="$(BinDirectory)\Release\github.trondr NMultiTool $(AssemblyVersion)\VendorInstall\NMultiTool.$(AssemblyVersion).msi"
+      VendorInstallIni="$(BinDirectory)\Release\github.trondr NMultiTool $(AssemblyVersion)\VendorInstall\VendorInstall.ini"
+      PackageDefinitionSms="$(BinDirectory)\Release\github.trondr NMultiTool $(AssemblyVersion)\PackageDefinition.sms"
+      PackageDefinitionName="NMultiTool"
+      PackageDefinitionVersion="$(AssemblyVersion)"
+      PackageDefinitionPublisher="github.trondr"
+      PackageDefinitionInstallCommandLine="Install.cmd Install > &quot;%Public%\Logs\github_trondr_NMultiTool$(AssemblyVersionU)_Install.cmd.log&quot;"
+      PackageDefinitionUnInstallCommandLine="Install.cmd UnInstall > &quot;%Public%\Logs\github_trondr_NMultiTool$(AssemblyVersionU)_UnInstall.cmd.log&quot;"
+     />
   </Target>
 
-  <Target Name="Build" DependsOnTargets="Deploy">
+  <Target Name="Build" DependsOnTargets="CompileSetup">
     <Message Text="$(ProductProjectName).$(AssemblyVersion) build complete" Importance="normal" />
   </Target>
 </Project>
