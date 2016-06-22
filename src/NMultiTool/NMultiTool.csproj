@@ -115,6 +115,7 @@
     <Compile Include="Infrastructure\NotepadMessenger.cs" />
     <Compile Include="Module\Commands\CreateNugetSpecCommand.cs" />
     <Compile Include="Infrastructure\TraceLogAspect.cs" />
+    <Compile Include="Module\Commands\ExtractIconCommand.cs" />
     <Compile Include="Module\Commands\FindDuplicateFilesCommand.cs" />
     <Compile Include="Module\Commands\Folder2WxsCommand.cs" />
     <Compile Include="Module\Commands\InstallUtilCommand.cs" />

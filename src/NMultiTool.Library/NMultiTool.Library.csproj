@@ -63,6 +63,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -74,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Module\Commands\CreateNugetSpec\INuGetSpec.cs" />
     <Compile Include="Module\Commands\CreateNugetSpec\NuGetSpec.cs" />
+    <Compile Include="Module\Commands\ExtractIcon\IExtractIconCommandProvider.cs" />
     <Compile Include="Module\Commands\FindDuplicateFiles\DuplicateFileInfo.cs" />
     <Compile Include="Module\Commands\FindDuplicateFiles\DuplicateFilesCompare.cs" />
     <Compile Include="Module\Commands\FindDuplicateFiles\FindDuplicateFilesCommandProvider.cs" />
