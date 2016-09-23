@@ -113,6 +113,7 @@
     <Compile Include="Infrastructure\CustomTypeFactoryComponentSelector.cs" />
     <Compile Include="Infrastructure\LoggerSubDependencyResolver.cs" />
     <Compile Include="Infrastructure\NotepadMessenger.cs" />
+    <Compile Include="Module\Commands\ConvertSvgToIcoCommand.cs" />
     <Compile Include="Module\Commands\CreateNugetSpecCommand.cs" />
     <Compile Include="Infrastructure\TraceLogAspect.cs" />
     <Compile Include="Module\Commands\ExtractIconCommand.cs" />

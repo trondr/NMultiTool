@@ -73,8 +73,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Module\Commands\ConvertSvgToIco\ConvertSvgToIcoCommandProvider.cs" />
+    <Compile Include="Module\Commands\ConvertSvgToIco\IImageMagicProvider.cs" />
+    <Compile Include="Module\Commands\ConvertSvgToIco\IInkscapeProvider.cs" />
+    <Compile Include="Module\Commands\ConvertSvgToIco\ImageMagicProvider.cs" />
+    <Compile Include="Module\Commands\ConvertSvgToIco\InkscapeProvider.cs" />
+    <Compile Include="Module\Commands\ConvertSvgToIco\NMultiToolException.cs" />
     <Compile Include="Module\Commands\CreateNugetSpec\INuGetSpec.cs" />
     <Compile Include="Module\Commands\CreateNugetSpec\NuGetSpec.cs" />
+    <Compile Include="Module\Commands\ConvertSvgToIco\IConvertSvgToIcoCommandProvider.cs" />
     <Compile Include="Module\Commands\ExtractIcon\IExtractIconCommandProvider.cs" />
     <Compile Include="Module\Commands\FindDuplicateFiles\DuplicateFileInfo.cs" />
     <Compile Include="Module\Commands\FindDuplicateFiles\DuplicateFilesCompare.cs" />
