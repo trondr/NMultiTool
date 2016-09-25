@@ -16,7 +16,14 @@ namespace NMultiTool.Library.Module.Commands.ConvertAllSvgToIco
         public int StartProcess(string exe, string arguments)
         {
             _logger.DebugFormat("\"{0}\" {1}", exe, arguments);
-            var process = Process.Start(exe, arguments);
+            var startInfo = new ProcessStartInfo()
+            {
+                FileName = exe,
+                Arguments = arguments,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+            var process = Process.Start(startInfo);
             if (process == null) throw new NMultiToolException("Failed to start: " + exe);
             process.WaitForExit();
             var exitCode = process.ExitCode;
