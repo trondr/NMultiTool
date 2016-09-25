@@ -16,11 +16,11 @@ namespace NMultiTool.Library.Module.Commands.ConvertAllSvgToIco
         private readonly IProcessProvider _processProvider;
         private readonly ILog _logger;
 
-        public ConvertAllSvgToIcoCommandProvider(IIconInfoProvider iconInfoProvider, 
-            IImageMagicProvider imageMagicProvider, 
-            IInkscapeProvider inkscapeProvider, 
-            IProcessProvider processProvider, 
-            ILog logger        
+        public ConvertAllSvgToIcoCommandProvider(IIconInfoProvider iconInfoProvider,
+            IImageMagicProvider imageMagicProvider,
+            IInkscapeProvider inkscapeProvider,
+            IProcessProvider processProvider,
+            ILog logger
         )
         {
             _iconInfoProvider = iconInfoProvider;
@@ -30,22 +30,30 @@ namespace NMultiTool.Library.Module.Commands.ConvertAllSvgToIco
             _logger = logger;
         }
 
-        public int ConvertAllSvgToIco(string folder, bool recursive, bool refresh, int[] sizes, int maxDegreeOfParallelism)
+        public int ConvertAllSvgToIco(string folder, bool recursive, bool refresh, int[] sizes,
+            int maxDegreeOfParallelism)
         {
             var resultCode = 0;
-            var iconInfos = _iconInfoProvider.GetIconInfos(folder,recursive,sizes);
+            var iconInfos = _iconInfoProvider.GetIconInfos(folder, recursive, sizes);
             var parallelOptions = new ParallelOptions() {MaxDegreeOfParallelism = maxDegreeOfParallelism};
             Parallel.ForEach(iconInfos, parallelOptions, (iconInfo, state) =>
             {
-                var isupdated = ConvertSvgToPngs(iconInfo, sizes, refresh);
-                var iconFileExists = iconInfo.IconFile.Exists;             
-                if (isupdated || !iconFileExists || refresh)
+                try
                 {
-                    _imageMagicProvider.CreateIconFromPngFiles(iconInfo);                    
+                    var isupdated = ConvertSvgToPngs(iconInfo, sizes, refresh);
+                    var iconFileExists = iconInfo.IconFile.Exists;
+                    if (isupdated || !iconFileExists || refresh)
+                    {
+                        _imageMagicProvider.CreateIconFromPngFiles(iconInfo);
+                    }
+                    else
+                    {
+                        _logger.Info("Up to date: " + iconInfo.IconFile.FullName);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    _logger.Info("Up to date: " + iconInfo.IconFile.FullName);
+                    _logger.Error(ex.Message);
                 }
             });
             return resultCode;
