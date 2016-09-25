@@ -63,7 +63,7 @@ namespace NMultiTool.Library.Module.Commands.ConvertSvgToIco
             {
                 throw new NMultiToolException("Failed to create icon from png files. Exit code: " + exitCode);
             }
-            if (!File.Exists(iconInfo.IconFile.FullName))
+            if (!iconInfo.IconFile.Exists)
             {
                 throw new NMultiToolException("Failed to create icon from png files. Icon file has not been created: " + iconInfo.IconFile.FullName);
             }
