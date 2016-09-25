@@ -2,6 +2,6 @@
 {
     public interface IConvertSvgToIcoCommandProvider
     {
-        int ConvertSvgToIco(string svgFileName);
+        int ConvertSvgToIco(string svgFileName, int[] sizes, bool refresh);
     }
 }

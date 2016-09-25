@@ -5,7 +5,7 @@ NMultiTool provides commands useful during build or install of an application or
 ##Usage
 
 ```
-NMultiTool 1.0.16089.0. - NMultiTool provides commands useful during build or install of an application or library
+NMultiTool 1.0.16267.45.1125a4b - NMultiTool provides commands useful during build or install of an application or library
 Copyright © github.trondr 2016
 Author: trondr@outlook.com
 Usage: NMultiTool.exe <command> [parameters]
@@ -15,17 +15,16 @@ Commands:
 Help                      Display this help text
 License                   Display license
 Credits                   Display credits
+ConvertAllSvgToIco        Convert svg files in folder (and subfolders if
+                          recursive==true) to multi size icon files of
+                          specified sizes.
+ConvertSvgToIco           Convert a .svg vector graphics file to a multi size
+                          .ico file.
 CreateNugetSpec           Create nuget spec from a template and update
                           information in the resulting nuget file with meta
                           data from a specified assembly.
-FindDuplicateFiles        Find duplicate files in one or more locations. Use
-                          rules to suggest wich duplicate files to keep and
-                          which to delete. The rules defined first have
-                          priority over rules defined after. The provided
-                          example values will search the 'd:' drive and 'e:'
-                          drive for duplicate files and suggest deleting
-                          files on the the 'e:' drive since the regular
-                          expression for the e drive is listed first.
+ExtractIcon               Extract icons from file.
+FindDuplicateFiles        Find duplicate files in one or more locations. 
 Folder2Wxs                Harvest files and sub folders into a Wxs file for
                           inclusion into a WiX setup project.
 InstallUtil               InstallUtil processes specified .NET assemblies and
@@ -34,6 +33,42 @@ InstallUtil               InstallUtil processes specified .NET assemblies and
 
 Commands and parameters:
 ------------------------
+ConvertAllSvgToIco        Convert svg files in folder (and subfolders if
+                          recursive==true) to multi size icon files of
+                          specified sizes.
+   /folder                [Required] Folder to search for svg files
+                          Alternative parameter name: /d
+   /recursive             [Optional] Recurse sub folders. Alternative
+                          parameter name: /r. Default value: True
+   /refresh               [Optional] Recreate icon even if it allready
+                          exists. Alternative parameter name: /rf. Default
+                          value: False
+   /sizes                 [Optional] Create multi size icon with the
+                          specified array of sizes Alternative parameter
+                          name: /s. Default value: [16;32;64;128;256]
+   /maxDegreeOfParallelism[Optional] Run specified number of conversions in
+                          parallel. Alternative parameter name: /p. Default
+                          value: 4
+
+   Example: NMultiTool.exe ConvertAllSvgToIco /folder="c:\temp\icons" /recursive="True" /refresh="False" /sizes="[16;32;64;128;256]" /maxDegreeOfParallelism="4" 
+   Example (alternative): NMultiTool.exe ConvertAllSvgToIco /d="c:\temp\icons" /r="True" /rf="False" /s="[16;32;64;128;256]" /p="4" 
+
+
+ConvertSvgToIco           Convert a .svg vector graphics file to a multi size
+                          .ico file.
+   /svgFileName           [Required] Path to vector graphics file having
+                          format *.svg Alternative parameter name: /svg
+   /refresh               [Optional] Recreate icon even if it allready
+                          exists. Alternative parameter name: /rf. Default
+                          value: False
+   /sizes                 [Optional] Sizes of the images included in the
+                          multi size .ico file. Alternative parameter name:
+                          /s. Default value: [16;32;64;128;256]
+
+   Example: NMultiTool.exe ConvertSvgToIco /svgFileName="c:\temp\test.svg" /refresh="False" /sizes="[16;32;64;128;256]" 
+   Example (alternative): NMultiTool.exe ConvertSvgToIco /svg="c:\temp\test.svg" /rf="False" /s="[16;32;64;128;256]" 
+
+
 CreateNugetSpec           Create nuget spec from a template and update
                           information in the resulting nuget file with meta
                           data from a specified assembly.
@@ -47,6 +82,16 @@ CreateNugetSpec           Create nuget spec from a template and update
 
    Example: NMultiTool.exe CreateNugetSpec /manifestTemplate="c:\temp\SomeSource.nuspec" /manifestTarget="c:\temp\SomeTarget.nuspec" /assemblyPath="c:\temp\SomeLib.dll" 
    Example (alternative): NMultiTool.exe CreateNugetSpec /nmt="c:\temp\SomeSource.nuspec" /tf="c:\temp\SomeTarget.nuspec" /ap="c:\temp\SomeLib.dll" 
+
+
+ExtractIcon               Extract icons from file.
+   /sourceFile            [Required] Binary file to extract icons from.
+                          Alternative parameter name: /sf
+   /targetFolder          [Required] Save icon to this folder. Alternative
+                          parameter name: /tf
+
+   Example: NMultiTool.exe ExtractIcon /sourceFile="c:\windows\notepad.exe" /targetFolder="c:\temp" 
+   Example (alternative): NMultiTool.exe ExtractIcon /sf="c:\windows\notepad.exe" /tf="c:\temp" 
 
 
 FindDuplicateFiles        Find duplicate files in one or more locations. Use

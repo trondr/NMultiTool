@@ -15,7 +15,7 @@ namespace NMultiTool.Module.Commands
         }
 
         [CLSCompliant(false)]
-        [Command(Description = "Find duplicate files in one or more locations. Use rules to suggest wich duplicate files to keep and which to delete. The rules defined first have priority over rules defined after. The provided example values will search the 'd:' drive and 'e:' drive for duplicate files and suggest deleting files on the the 'e:' drive since the regular expression for the e drive is listed first.")]
+        [Command(Summary = "Find duplicate files in one or more locations. ", Description = "Find duplicate files in one or more locations. Use rules to suggest wich duplicate files to keep and which to delete. The rules defined first have priority over rules defined after. The provided example values will search the 'd:' drive and 'e:' drive for duplicate files and suggest deleting files on the the 'e:' drive since the regular expression for the e drive is listed first.")]
         public int FindDuplicateFiles(
             [RequiredCommandParameter(Description = "Array of paths to search for duplicate files.", ExampleValue = new string[]{@"d:\Dev", @"e:\Dev"}, AlternativeName = "ps")]
                 string[] pathsToSearch,
@@ -27,6 +27,4 @@ namespace NMultiTool.Module.Commands
             return returnValue;
         }
     }
-
-    
 }

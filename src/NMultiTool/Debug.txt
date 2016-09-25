@@ -1,2 +1,6 @@
 ﻿Help
-CreateSomething /exampleParameter="c:\temp"
+
+
+ConvertSvgToIco /svgFileName="C:\temp\Icons\Entypo+\address.svg" /refresh="False" /sizes="[16;32;64;128;256]" 
+
+ConvertAllSvgToIco /folder="c:\temp\icons" /recursive="True" /refresh="False" /sizes="[16;32;64;128;256]" /maxDegreeOfParallelism="4" 

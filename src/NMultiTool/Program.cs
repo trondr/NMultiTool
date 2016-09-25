@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Common.Logging;
 using NCmdLiner;
 using NCmdLiner.Exceptions;
@@ -41,8 +40,8 @@ namespace NMultiTool
                 {
                     logger.InfoFormat("Stop: {0}.{1}. Return value: {2}", applicationInfo.Name, applicationInfo.Version, returnValue);
 #if DEBUG
-                    System.Console.WriteLine("Terminating in 5 seconds...");
-                    Thread.Sleep(5000);
+                    System.Console.WriteLine("Press any key...");
+                    Console.ReadLine();
 #endif
                 }
             }

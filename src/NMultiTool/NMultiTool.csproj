@@ -76,8 +76,8 @@
       <HintPath>..\..\tools\NuGetPackages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NCmdLiner, Version=1.0.15244.126, Culture=neutral, PublicKeyToken=37f01c356c8e03d5, processorArchitecture=MSIL">
-      <HintPath>..\..\tools\NuGetPackages\NCmdLiner.1.0.15244.126\lib\net45\NCmdLiner.dll</HintPath>
+    <Reference Include="NCmdLiner, Version=1.2.16218.181, Culture=neutral, PublicKeyToken=37f01c356c8e03d5, processorArchitecture=MSIL">
+      <HintPath>..\..\tools\NuGetPackages\NCmdLiner.1.2.16218.181\lib\net452\NCmdLiner.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -113,6 +113,7 @@
     <Compile Include="Infrastructure\CustomTypeFactoryComponentSelector.cs" />
     <Compile Include="Infrastructure\LoggerSubDependencyResolver.cs" />
     <Compile Include="Infrastructure\NotepadMessenger.cs" />
+    <Compile Include="Module\Commands\ConvertAllSvgToIcoCommand.cs" />
     <Compile Include="Module\Commands\ConvertSvgToIcoCommand.cs" />
     <Compile Include="Module\Commands\CreateNugetSpecCommand.cs" />
     <Compile Include="Infrastructure\TraceLogAspect.cs" />

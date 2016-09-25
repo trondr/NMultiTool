@@ -1,7 +1,9 @@
+using NMultiTool.Library.Module.Commands.ConvertAllSvgToIco;
+
 namespace NMultiTool.Library.Module.Commands.ConvertSvgToIco
 {
     public interface IInkscapeProvider
     {
-        string GetInkscapeExe();
+        void ExportSvgToPng(IconFileInfo svgFile, PngFileInfo pngFile);
     }
 }
