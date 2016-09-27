@@ -66,7 +66,7 @@ namespace NMultiTool.Library.Module.Commands.ConvertAllSvgToIco
 
         public bool NeedUpdate()
         {
-            var modifyDateDifferent = IconFile.ModfiedTime != SvgFile.ModfiedTime;
+            var modifyDateDifferent = IconFile.ModfiedTime < SvgFile.ModfiedTime;
             if (modifyDateDifferent)
                 return true;
 
@@ -78,7 +78,7 @@ namespace NMultiTool.Library.Module.Commands.ConvertAllSvgToIco
             if (pngFilesAreMissing)
                 return true;
 
-            modifyDateDifferent = PngFiles.Any(info => info.ModfiedTime != SvgFile.ModfiedTime);
+            modifyDateDifferent = PngFiles.Any(info => info.ModfiedTime < SvgFile.ModfiedTime);
             if (modifyDateDifferent)
                 return true;
 

@@ -55,6 +55,10 @@
       <HintPath>..\..\tools\NuGetPackages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Moq, Version=4.5.22.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\tools\NuGetPackages\Moq.4.5.22\lib\net45\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NuGetPackages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
@@ -85,6 +89,8 @@
     <Compile Include="IntegrationTests\InstallUtilTests.cs" />
     <Compile Include="IntegrationTests\StandardUser\ExampleStandardUserIntegrationTests.cs" />
     <Compile Include="IntegrationTests\StandardUser\StandardUserImpersonationTests.cs" />
+    <Compile Include="Module\Commands\ConvertSvgToIco\ImageMagicProviderTests.cs" />
+    <Compile Include="Module\Commands\ConvertSvgToIco\LibraryImageMagicProviderTests.cs" />
     <Compile Include="UnitTests\IdFromNameGeneratorTests.cs" />
     <Compile Include="UnitTests\UnitTestsTemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -93,6 +99,10 @@
     <ProjectReference Include="..\NMultiTool.Library\NMultiTool.Library.csproj">
       <Project>{88bbc1f8-f0e9-4259-9357-4e3da770a6d6}</Project>
       <Name>NMultiTool.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NMultiTool\NMultiTool.csproj">
+      <Project>{4be5c7bc-0e00-4d0c-a77f-091e7f3a0291}</Project>
+      <Name>NMultiTool</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -88,6 +88,7 @@
     <Compile Include="Module\Commands\ConvertAllSvgToIco\IconInfoProvider.cs" />
     <Compile Include="Module\Commands\ConvertSvgToIco\ConvertSvgToIcoCommandProvider.cs" />
     <Compile Include="Module\Commands\ConvertSvgToIco\IconCreateResult.cs" />
+    <Compile Include="Module\Commands\ConvertSvgToIco\IconDefines.cs" />
     <Compile Include="Module\Commands\ConvertSvgToIco\IImageMagicProvider.cs" />
     <Compile Include="Module\Commands\ConvertSvgToIco\IInkscapeProvider.cs" />
     <Compile Include="Module\Commands\ConvertSvgToIco\ImageMagicProvider.cs" />
