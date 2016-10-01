@@ -77,6 +77,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Module\Commands\BackupGitRepositories\BackupGitRepositoriesCommandProvider.cs" />
+    <Compile Include="Module\Commands\BackupGitRepositories\BackupGitRepositoriesConfiguration.cs" />
+    <Compile Include="Module\Commands\BackupGitRepositories\ChangeCurrentDirectory.cs" />
+    <Compile Include="Module\Commands\BackupGitRepositories\GitRepository.cs" />
+    <Compile Include="Module\Commands\BackupGitRepositories\GitRepositoryBackupFolderProvider.cs" />
+    <Compile Include="Module\Commands\BackupGitRepositories\IBackupGitRepositoriesCommandProvider.cs" />
+    <Compile Include="Module\Commands\BackupGitRepositories\IBackupGitRepositoriesConfigurationProvider.cs" />
+    <Compile Include="Module\Commands\BackupGitRepositories\IGitRepositoryBackupFolderProvider.cs" />
     <Compile Include="Module\Commands\ConvertAllSvgToIco\ConvertAllSvgToIcoCommandProvider.cs" />
     <Compile Include="Module\Commands\ConvertAllSvgToIco\IconFileInfo.cs" />
     <Compile Include="Module\Commands\ConvertAllSvgToIco\IConvertAllSvgToIcoCommandProvider.cs" />

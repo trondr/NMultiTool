@@ -89,6 +89,7 @@
     <Compile Include="IntegrationTests\InstallUtilTests.cs" />
     <Compile Include="IntegrationTests\StandardUser\ExampleStandardUserIntegrationTests.cs" />
     <Compile Include="IntegrationTests\StandardUser\StandardUserImpersonationTests.cs" />
+    <Compile Include="Module\Commands\BackupGitRepositories\GitRepositoryBackupFolderProviderTests.cs" />
     <Compile Include="Module\Commands\ConvertSvgToIco\ImageMagicProviderTests.cs" />
     <Compile Include="Module\Commands\ConvertSvgToIco\LibraryImageMagicProviderTests.cs" />
     <Compile Include="UnitTests\IdFromNameGeneratorTests.cs" />
