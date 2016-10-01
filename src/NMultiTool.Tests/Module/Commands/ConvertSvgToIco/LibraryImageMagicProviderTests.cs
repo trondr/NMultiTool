@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using Common.Logging;
+using Common.Logging.Simple;
 using NMultiTool.Library.Infrastructure;
 using NMultiTool.Library.Module.Commands.ConvertAllSvgToIco;
 using NMultiTool.Library.Module.Commands.ConvertSvgToIco;
@@ -12,7 +14,7 @@ namespace NMultiTool.Tests.Module.Commands.ConvertSvgToIco
         [Test()]
         public void CreateIconFromPngFilesTest()
         {
-            var target = new ImageMagicProvider();
+            var target = new ImageMagicProvider(new ConsoleOutLogger(GetType().Name,LogLevel.All,true,true,true,"yyyy-MM-dd-HH-mm-ss" ));
             ToDo.Implement(ToDoPriority.Critical, "trondr","Replace hardcoding of svg test file.");
             var iconInfo = new IconInfo(@"C:\Dev\github-trondr\NMultiTool\src\NMultiTool.Tests\Module\Commands\ConvertSvgToIco\address.svg", new []{16,24,32,48,64,72,128,256});
             File.Delete(iconInfo.IconFile.FullName);

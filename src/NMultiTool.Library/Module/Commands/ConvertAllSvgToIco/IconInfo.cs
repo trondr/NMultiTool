@@ -85,6 +85,19 @@ namespace NMultiTool.Library.Module.Commands.ConvertAllSvgToIco
             return false;
         }
 
+        public bool NeedUpdate(PngFileInfo pngFile)
+        {
+            var pngFileIsMissing = !pngFile.Exists;
+            if (pngFileIsMissing)
+                return true;
+
+            var modifyDateDifferent = pngFile.ModfiedTime < SvgFile.ModfiedTime;
+            if (modifyDateDifferent)
+                return true;
+
+            return false;
+        }
+
         private string BaseFileName
         {
             get

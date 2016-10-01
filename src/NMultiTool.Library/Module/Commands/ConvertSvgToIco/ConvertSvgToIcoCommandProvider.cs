@@ -37,14 +37,20 @@ namespace NMultiTool.Library.Module.Commands.ConvertSvgToIco
                 for (int i = 0; i < iconInfo.PngFiles.Count - 1; i++)
                 {
                     var pngFile = iconInfo.PngFiles[i];
-                    _imageMagicProvider.ResizePng(iconInfo.LargestPngFile, pngFile);
+                    if (iconInfo.NeedUpdate(pngFile))
+                    {
+                        _imageMagicProvider.ResizePng(iconInfo.LargestPngFile, pngFile);
+                    }
+                    else
+                    {
+                        _logger.Info("Png up to date: " + pngFile.FullName);
+                    }
                 }
-
                 _imageMagicProvider.CreateIconFromPngFiles(iconInfo);
             }
             else
             {
-                _logger.Info("Up to date: " + iconInfo.IconFile.FullName);
+                _logger.Info("Icon up to date: " + iconInfo.IconFile.FullName);
             }
             return exitCode;
         }

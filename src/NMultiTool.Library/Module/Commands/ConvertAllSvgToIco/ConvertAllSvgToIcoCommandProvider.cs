@@ -48,7 +48,7 @@ namespace NMultiTool.Library.Module.Commands.ConvertAllSvgToIco
                     }
                     else
                     {
-                        _logger.Info("Up to date: " + iconInfo.IconFile.FullName);
+                        _logger.Info("Icon up to date: " + iconInfo.IconFile.FullName);
                     }
                 }
                 catch (Exception ex)
@@ -77,7 +77,14 @@ namespace NMultiTool.Library.Module.Commands.ConvertAllSvgToIco
                 if (needUpdate || refresh)
                 {
                     var pngFile = iconInfo.PngFiles[i];
-                    _imageMagicProvider.ResizePng(iconInfo.LargestPngFile, pngFile);
+                    if (iconInfo.NeedUpdate(pngFile))
+                    {
+                        _imageMagicProvider.ResizePng(iconInfo.LargestPngFile, pngFile);
+                    }
+                    else
+                    {
+                        _logger.Info("Png up to date: " + iconInfo.IconFile.FullName);
+                    }
                     isUpdated = true;
                 }
             }
