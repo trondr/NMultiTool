@@ -40,6 +40,7 @@ namespace NMultiTool.Library.Module.Commands.BackupGitRepositories
 
         private void BackupRepository(string localBackupRepositoryFolder)
         {
+            _logger.Info("Backup to: " + localBackupRepositoryFolder);
             using (new ChangeCurrentDirectory(localBackupRepositoryFolder))
             {
                 _process.Reset();
