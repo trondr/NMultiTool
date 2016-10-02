@@ -79,11 +79,14 @@
   <ItemGroup>
     <Compile Include="Module\Commands\BackupGitRepositories\BackupGitRepositoriesCommandProvider.cs" />
     <Compile Include="Module\Commands\BackupGitRepositories\BackupGitRepositoriesConfiguration.cs" />
+    <Compile Include="Module\Commands\BackupGitRepositories\BackupGitRepositoriesConfigurationProvider.cs" />
     <Compile Include="Module\Commands\BackupGitRepositories\ChangeCurrentDirectory.cs" />
+    <Compile Include="Module\Commands\BackupGitRepositories\ConfigurationProvider.cs" />
     <Compile Include="Module\Commands\BackupGitRepositories\GitRepository.cs" />
     <Compile Include="Module\Commands\BackupGitRepositories\GitRepositoryBackupFolderProvider.cs" />
     <Compile Include="Module\Commands\BackupGitRepositories\IBackupGitRepositoriesCommandProvider.cs" />
     <Compile Include="Module\Commands\BackupGitRepositories\IBackupGitRepositoriesConfigurationProvider.cs" />
+    <Compile Include="Module\Commands\BackupGitRepositories\IConfigurationProvider.cs" />
     <Compile Include="Module\Commands\BackupGitRepositories\IGitRepositoryBackupFolderProvider.cs" />
     <Compile Include="Module\Commands\ConvertAllSvgToIco\ConvertAllSvgToIcoCommandProvider.cs" />
     <Compile Include="Module\Commands\ConvertAllSvgToIco\IconFileInfo.cs" />

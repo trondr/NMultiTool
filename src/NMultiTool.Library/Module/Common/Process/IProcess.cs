@@ -9,5 +9,6 @@ namespace NMultiTool.Library.Module.Common.Process
         string StandardOutput { get; }
         string StandardError { get; }
         int ExitCode { get; }
+        void Reset();
     }
 }

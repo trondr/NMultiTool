@@ -2,6 +2,6 @@
 {
     public interface IBackupGitRepositoriesCommandProvider
     {
-        void BackupGitRepositories(string backupGitRepositoriesConfigurationFile);
+        int BackupGitRepositories(string backupGitRepositoriesConfigurationFile);
     }
 }

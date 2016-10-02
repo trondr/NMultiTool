@@ -1,19 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using Common.Logging;
 using NMultiTool.Library.Module.Commands.ConvertSvgToIco;
 
 namespace NMultiTool.Library.Module.Common.Process
 {
     public class Process : IProcess
     {
+        private readonly ILog _logger;
         readonly StringBuilder _standardOutputText;
         readonly StringBuilder _standardErrorText;
         readonly List<string> _standardInputLines;
         bool _canExecute;
 
-        public Process()
+        public Process(ILog logger)
         {
+            _logger = logger;
             _standardOutputText = new StringBuilder();
             _standardErrorText = new StringBuilder();
             _standardInputLines = new List<string>();
@@ -22,6 +25,7 @@ namespace NMultiTool.Library.Module.Common.Process
         
         public void Execute(string fileName, string arguments, bool waitforExit, string workingDirectory)
         {
+            _logger.InfoFormat("Start: \"{0}\" {1}", fileName, arguments);
             CheckAndSetCanExecute();
             var processStartInfo = new ProcessStartInfo(fileName,arguments);
             processStartInfo.UseShellExecute = false;
@@ -46,7 +50,8 @@ namespace NMultiTool.Library.Module.Common.Process
             };
             process.Exited += (sender, args) =>
             {
-                ExitCode = process.ExitCode;                
+                ExitCode = process.ExitCode;
+                _logger.InfoFormat("Exit: \"{0}\" {1} (ExitCode: {2})", fileName, arguments, ExitCode);
             };            
             process.Start();
             process.BeginOutputReadLine();

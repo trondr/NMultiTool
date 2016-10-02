@@ -1,5 +1,6 @@
 ﻿using System;
 using Castle.DynamicProxy.Contributors;
+using Common.Logging;
 using NMultiTool.Infrastructure;
 using NMultiTool.Library.Module.Commands.ConvertSvgToIco;
 using NUnit.Framework;
@@ -9,13 +10,15 @@ namespace NMultiTool.Tests.Module.Common.Process
     [TestFixture]
     public class ProcessTests
     {
+        private ILog _logger = LogManager.GetLogger<ProcessTests>();
+
         [Test]
         public void ExecuteStdOutTest()
         {
             using (var testConsoleExe = new TestConsoleExe())
             {
                 var exeFile = testConsoleExe.TestConsoleExeFile;
-                var target = new Library.Module.Common.Process.Process();
+                var target = new Library.Module.Common.Process.Process(_logger);
                 var arguments = "WriteVersionToStdOut";
                 target.Execute(exeFile, arguments, true, null);
                 var expected = "Version 1.0.0.1" + Environment.NewLine;
@@ -30,7 +33,7 @@ namespace NMultiTool.Tests.Module.Common.Process
             using (var testConsoleExe = new TestConsoleExe())
             {
                 var exeFile = testConsoleExe.TestConsoleExeFile;
-                var target = new Library.Module.Common.Process.Process();
+                var target = new Library.Module.Common.Process.Process(_logger);
                 var arguments = "Wait5SecondsAndExit";
                 target.Execute(exeFile, arguments, true, null);
                 var expected = "Waiting....."+ Environment.NewLine + "Done waiting!" + Environment.NewLine;
@@ -45,7 +48,7 @@ namespace NMultiTool.Tests.Module.Common.Process
             using (var testConsoleExe = new TestConsoleExe())
             {
                 var exeFile = testConsoleExe.TestConsoleExeFile;
-                var target = new Library.Module.Common.Process.Process();
+                var target = new Library.Module.Common.Process.Process(_logger);
                 var arguments = "WriteErrorToStdErrAndReturnOne";
                 target.Execute(exeFile, arguments, true, null);
                 var expected = "ERROR: Simulated error 1!" + Environment.NewLine + "ERROR: Simulated error 2!" + Environment.NewLine;
@@ -63,7 +66,7 @@ namespace NMultiTool.Tests.Module.Common.Process
             using (var testConsoleExe = new TestConsoleExe())
             {
                 var exeFile = testConsoleExe.TestConsoleExeFile;
-                var target = new Library.Module.Common.Process.Process();
+                var target = new Library.Module.Common.Process.Process(_logger);
                 var arguments = "AskForPassword";
                 target.WriteToStandardInput("secret");
                 target.Execute(exeFile, arguments, true, null);
@@ -82,7 +85,7 @@ namespace NMultiTool.Tests.Module.Common.Process
             using (var testConsoleExe = new TestConsoleExe())
             {
                 var exeFile = testConsoleExe.TestConsoleExeFile;
-                var target = new Library.Module.Common.Process.Process();
+                var target = new Library.Module.Common.Process.Process(_logger);
                 var arguments = "AskForPassword";
                 target.WriteToStandardInput("wrongsecret");
                 target.Execute(exeFile, arguments, true, null);
@@ -105,7 +108,7 @@ namespace NMultiTool.Tests.Module.Common.Process
             using (var testConsoleExe = new TestConsoleExe())
             {
                 var exeFile = testConsoleExe.TestConsoleExeFile;
-                var target = new Library.Module.Common.Process.Process();
+                var target = new Library.Module.Common.Process.Process(_logger);
                 var arguments = "WriteVersionToStdOut";
                 target.Execute(exeFile, arguments, true, null);
                 Assert.Throws<NMultiToolException>(() =>
@@ -124,7 +127,7 @@ namespace NMultiTool.Tests.Module.Common.Process
             using (var testConsoleExe = new TestConsoleExe())
             {
                 var exeFile = testConsoleExe.TestConsoleExeFile;
-                var target = new Library.Module.Common.Process.Process();
+                var target = new Library.Module.Common.Process.Process(_logger);
                 var arguments = "WriteVersionToStdOut";
                 target.Execute(exeFile, arguments, true, null);
                 var expected = "Version 1.0.0.1" + Environment.NewLine;
