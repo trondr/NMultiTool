@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMultiTool", "src\NMultiTool\NMultiTool.csproj", "{4BE5C7BC-0E00-4D0C-A77F-091E7F3A0291}"
 EndProject
@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMultiTool.Gui", "src\NMult
 	ProjectSection(ProjectDependencies) = postProject
 		{4BE5C7BC-0E00-4D0C-A77F-091E7F3A0291} = {4BE5C7BC-0E00-4D0C-A77F-091E7F3A0291}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMultiTool.TestConsole", "src\NMultiTool.TestConsole\NMultiTool.TestConsole.csproj", "{A7C9AD4A-66A3-4A3B-947F-75A9FA5415C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,6 +90,18 @@ Global
 		{52893A81-5995-41EB-8BE2-C8FDCB746FB6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{52893A81-5995-41EB-8BE2-C8FDCB746FB6}.Release|x86.ActiveCfg = Release|Any CPU
 		{52893A81-5995-41EB-8BE2-C8FDCB746FB6}.Release|x86.Build.0 = Release|Any CPU
+		{A7C9AD4A-66A3-4A3B-947F-75A9FA5415C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7C9AD4A-66A3-4A3B-947F-75A9FA5415C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7C9AD4A-66A3-4A3B-947F-75A9FA5415C3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A7C9AD4A-66A3-4A3B-947F-75A9FA5415C3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A7C9AD4A-66A3-4A3B-947F-75A9FA5415C3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A7C9AD4A-66A3-4A3B-947F-75A9FA5415C3}.Debug|x86.Build.0 = Debug|Any CPU
+		{A7C9AD4A-66A3-4A3B-947F-75A9FA5415C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7C9AD4A-66A3-4A3B-947F-75A9FA5415C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7C9AD4A-66A3-4A3B-947F-75A9FA5415C3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A7C9AD4A-66A3-4A3B-947F-75A9FA5415C3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A7C9AD4A-66A3-4A3B-947F-75A9FA5415C3}.Release|x86.ActiveCfg = Release|Any CPU
+		{A7C9AD4A-66A3-4A3B-947F-75A9FA5415C3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

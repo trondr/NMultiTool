@@ -63,6 +63,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NuGetPackages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\tools\NuGetPackages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
@@ -92,6 +93,8 @@
     <Compile Include="Module\Commands\BackupGitRepositories\GitRepositoryBackupFolderProviderTests.cs" />
     <Compile Include="Module\Commands\ConvertSvgToIco\ImageMagicProviderTests.cs" />
     <Compile Include="Module\Commands\ConvertSvgToIco\LibraryImageMagicProviderTests.cs" />
+    <Compile Include="Module\Common\Process\ProcessTests.cs" />
+    <Compile Include="Module\Common\Process\TestConsoleExe.cs" />
     <Compile Include="UnitTests\IdFromNameGeneratorTests.cs" />
     <Compile Include="UnitTests\UnitTestsTemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -113,6 +116,7 @@
   <ItemGroup>
     <Content Include="IntegrationTests\AdminUser\Readme.txt" />
     <Content Include="IntegrationTests\StandardUser\Readme.txt" />
+    <EmbeddedResource Include="Module\Common\Process\NMultiTool.TestConsole.exe" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdminUserIntegrationTests\" />

@@ -132,6 +132,10 @@
     <Compile Include="Infrastructure\SingletonAttribute.cs" />
     <Compile Include="Infrastructure\ToDo.cs" />
     <Compile Include="Infrastructure\ToDoPriority.cs" />
+    <Compile Include="Module\Common\Process\IProcess.cs" />
+    <Compile Include="Module\Common\Process\Process.cs" />
+    <Compile Include="Module\Common\Resources\EmbeddedResource.cs" />
+    <Compile Include="Module\Common\Resources\IEmbeddedResource.cs" />
     <Compile Include="Module\Common\UI\CommandHandler.cs" />
     <Compile Include="Module\Common\Xml\IXmlHelper.cs" />
     <Compile Include="Module\Common\Xml\XmlHelper.cs" />
