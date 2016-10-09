@@ -5,7 +5,7 @@ NMultiTool provides commands useful during build or install of an application or
 ##Usage
 
 ```
-NMultiTool 1.0.16267.45.1125a4b - NMultiTool provides commands useful during build or install of an application or library
+NMultiTool 1.0.16271.47.9b066df - NMultiTool provides commands useful during build or install of an application or library
 Copyright © github.trondr 2016
 Author: trondr@outlook.com
 Usage: NMultiTool.exe <command> [parameters]
@@ -15,6 +15,7 @@ Commands:
 Help                      Display this help text
 License                   Display license
 Credits                   Display credits
+BackupGitRepositories     Backup git repositories.
 ConvertAllSvgToIco        Convert svg files in folder (and subfolders if
                           recursive==true) to multi size icon files of
                           specified sizes.
@@ -33,6 +34,14 @@ InstallUtil               InstallUtil processes specified .NET assemblies and
 
 Commands and parameters:
 ------------------------
+BackupGitRepositories     Backup git repositories.
+   /configurationFile     [Required] Path to configuration file Alternative
+                          parameter name: /cf
+
+   Example: NMultiTool.exe BackupGitRepositories /configurationFile="c:\temp\BackupGitRepositories.config" 
+   Example (alternative): NMultiTool.exe BackupGitRepositories /cf="c:\temp\BackupGitRepositories.config" 
+
+
 ConvertAllSvgToIco        Convert svg files in folder (and subfolders if
                           recursive==true) to multi size icon files of
                           specified sizes.
@@ -169,7 +178,6 @@ InstallUtil               InstallUtil processes specified .NET assemblies and
 
    Example: NMultiTool.exe InstallUtil /installAction="Install" /directory="c:\Program Fils (x86)\SomeCompany\SomeApplication\1.0.0.0" /includeFileSpecs="['SomeCompany.SomeApplication*.dll';'SomeCompany.SomeApplication*.exe']" /excludeFileSpecs="['Microsoft.*.dll';'Microsoft.*.exe']" 
    Example (alternative): NMultiTool.exe InstallUtil /a="Install" /d="c:\Program Fils (x86)\SomeCompany\SomeApplication\1.0.0.0" /if="['SomeCompany.SomeApplication*.dll';'SomeCompany.SomeApplication*.exe']" /ef="['Microsoft.*.dll';'Microsoft.*.exe']" 
-
 ```
 
 ## Minimum Build Requirements
