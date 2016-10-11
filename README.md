@@ -5,7 +5,7 @@ NMultiTool provides commands useful during build or install of an application or
 ##Usage
 
 ```
-NMultiTool 1.0.16271.47.9b066df - NMultiTool provides commands useful during build or install of an application or library
+NMultiTool 1.0.16285.48.9d540f1 - NMultiTool provides commands useful during build or install of an application or library
 Copyright © github.trondr 2016
 Author: trondr@outlook.com
 Usage: NMultiTool.exe <command> [parameters]
@@ -31,6 +31,7 @@ Folder2Wxs                Harvest files and sub folders into a Wxs file for
 InstallUtil               InstallUtil processes specified .NET assemblies and
                           executes Install or Uninstall on the installer
                           classes defined in the assemblies.
+SplitIco                  Split an icon file into multiple images
 
 Commands and parameters:
 ------------------------
@@ -178,6 +179,14 @@ InstallUtil               InstallUtil processes specified .NET assemblies and
 
    Example: NMultiTool.exe InstallUtil /installAction="Install" /directory="c:\Program Fils (x86)\SomeCompany\SomeApplication\1.0.0.0" /includeFileSpecs="['SomeCompany.SomeApplication*.dll';'SomeCompany.SomeApplication*.exe']" /excludeFileSpecs="['Microsoft.*.dll';'Microsoft.*.exe']" 
    Example (alternative): NMultiTool.exe InstallUtil /a="Install" /d="c:\Program Fils (x86)\SomeCompany\SomeApplication\1.0.0.0" /if="['SomeCompany.SomeApplication*.dll';'SomeCompany.SomeApplication*.exe']" /ef="['Microsoft.*.dll';'Microsoft.*.exe']" 
+
+
+SplitIco                  Split an icon file into multiple images
+   /icoFileName           [Required] Split ico file in multiple png files
+                          Alternative parameter name: /ico
+
+   Example: NMultiTool.exe SplitIco /icoFileName="c:\temp\test.ico" 
+   Example (alternative): NMultiTool.exe SplitIco /ico="c:\temp\test.ico" 
 ```
 
 ## Minimum Build Requirements
