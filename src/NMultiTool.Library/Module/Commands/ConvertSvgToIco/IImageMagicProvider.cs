@@ -6,6 +6,8 @@ namespace NMultiTool.Library.Module.Commands.ConvertSvgToIco
     {
         void ResizePng(PngFileInfo sourcePngFile, PngFileInfo targetPngFile);
 
-        void CreateIconFromPngFiles(IconInfo iconInfo);
+        void CreateIconFromPngFilesResized(IconInfo iconInfo);
+
+        void CreateIconFromPngFilesFromSvg(IconInfo iconInfo);
     }
 }

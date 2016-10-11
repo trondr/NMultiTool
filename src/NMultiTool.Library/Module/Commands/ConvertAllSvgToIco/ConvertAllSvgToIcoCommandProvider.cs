@@ -44,7 +44,7 @@ namespace NMultiTool.Library.Module.Commands.ConvertAllSvgToIco
                     var iconFileExists = iconInfo.IconFile.Exists;
                     if (isupdated || !iconFileExists || refresh)
                     {
-                        _imageMagicProvider.CreateIconFromPngFiles(iconInfo);
+                        _imageMagicProvider.CreateIconFromPngFilesFromSvg(iconInfo);
                     }
                     else
                     {
@@ -67,26 +67,8 @@ namespace NMultiTool.Library.Module.Commands.ConvertAllSvgToIco
             bool needUpdate = iconInfo.NeedUpdate();
             if (needUpdate || refresh)
             {
-                _inkscapeProvider.ExportSvgToPng(iconInfo.SvgFile, iconInfo.LargestPngFile);
+                _inkscapeProvider.ExportSvgToPngs(iconInfo);
                 isUpdated = true;
-            }
-            
-            //Resize the png to smaller sizes 
-            for (var i = 0; i < iconInfo.PngFiles.Count - 1; i++)
-            {
-                if (needUpdate || refresh)
-                {
-                    var pngFile = iconInfo.PngFiles[i];
-                    if (iconInfo.NeedUpdate(pngFile))
-                    {
-                        _imageMagicProvider.ResizePng(iconInfo.LargestPngFile, pngFile);
-                    }
-                    else
-                    {
-                        _logger.Info("Png up to date: " + iconInfo.IconFile.FullName);
-                    }
-                    isUpdated = true;
-                }
             }
             return isUpdated;
         }        

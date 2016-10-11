@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
 using Common.Logging;
 using NMultiTool.Library.Module.Commands.ConvertAllSvgToIco;
 
@@ -32,21 +29,8 @@ namespace NMultiTool.Library.Module.Commands.ConvertSvgToIco
 
             if (refresh || iconInfo.NeedUpdate())
             {
-                _inkscapeProvider.ExportSvgToPng(iconInfo.SvgFile, iconInfo.LargestPngFile);
-
-                for (int i = 0; i < iconInfo.PngFiles.Count - 1; i++)
-                {
-                    var pngFile = iconInfo.PngFiles[i];
-                    if (iconInfo.NeedUpdate(pngFile))
-                    {
-                        _imageMagicProvider.ResizePng(iconInfo.LargestPngFile, pngFile);
-                    }
-                    else
-                    {
-                        _logger.Info("Png up to date: " + pngFile.FullName);
-                    }
-                }
-                _imageMagicProvider.CreateIconFromPngFiles(iconInfo);
+                _inkscapeProvider.ExportSvgToPngs(iconInfo);                
+                _imageMagicProvider.CreateIconFromPngFilesFromSvg(iconInfo);
             }
             else
             {

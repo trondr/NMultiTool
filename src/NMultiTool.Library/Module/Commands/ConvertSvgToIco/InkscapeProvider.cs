@@ -33,6 +33,21 @@ namespace NMultiTool.Library.Module.Commands.ConvertSvgToIco
             pngFile.ModfiedTime = svgFile.ModfiedTime;
         }
 
+        public void ExportSvgToPngs(IconInfo iconInfo)
+        {
+            foreach (var pngFileInfo in iconInfo.PngFiles)
+            {
+                if (iconInfo.NeedUpdate(pngFileInfo))
+                {
+                    ExportSvgToPng(iconInfo.SvgFile, pngFileInfo);
+                }
+                else
+                {
+                    _logger.Info("Png up to date: " + pngFileInfo.FullName);
+                }
+            }
+        }
+
         private string GetInkscapeExe()
         {
             var exe = ConfigurationManager.AppSettings["InkscapeExe"];

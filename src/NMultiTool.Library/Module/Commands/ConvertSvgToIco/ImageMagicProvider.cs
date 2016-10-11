@@ -26,7 +26,7 @@ namespace NMultiTool.Library.Module.Commands.ConvertSvgToIco
             }
         }
 
-        public void CreateIconFromPngFiles(IconInfo iconInfo)
+        public void CreateIconFromPngFilesResized(IconInfo iconInfo)
         {
             _logger.InfoFormat("Creating: {0}", iconInfo.IconFile.FullName);
             var pngFileInfo = new FileInfo(iconInfo.LargestPngFile.FullName);
@@ -34,8 +34,24 @@ namespace NMultiTool.Library.Module.Commands.ConvertSvgToIco
             {
                 var defines = new IconDefines(iconInfo.Sizes);
                 var icoFileInfo = new FileInfo(iconInfo.IconFile.FullName);
-                image.Write(icoFileInfo,defines);
+                image.Write(icoFileInfo, defines);
             }                        
+        }
+
+        public void CreateIconFromPngFilesFromSvg(IconInfo iconInfo)
+        {
+            if (iconInfo.NeedUpdate())
+            {
+                using (var imageCollection = new MagickImageCollection())
+                {
+                    foreach (var iconInfoPngFile in iconInfo.PngFiles)
+                    {
+                        var image = new MagickImage(iconInfoPngFile.FullName);
+                        imageCollection.Add(image);
+                    }
+                    imageCollection.Write(iconInfo.IconFile.FullName);
+                }
+            }            
         }
     }
 }

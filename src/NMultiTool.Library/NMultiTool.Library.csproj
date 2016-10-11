@@ -125,6 +125,8 @@
     <Compile Include="Module\Commands\InstallUtil\IInstallUtil.cs" />
     <Compile Include="Module\Commands\InstallUtil\InstallAction.cs" />
     <Compile Include="Module\Commands\InstallUtil\InstallUtil.cs" />
+    <Compile Include="Module\Commands\SplitIco\ISplitIcoCommandProvider.cs" />
+    <Compile Include="Module\Commands\SplitIco\SplitIcoCommandProvider.cs" />
     <Compile Include="Module\Common\Install\IWindowsExplorerContextMenuInstaller.cs" />
     <Compile Include="Module\Common\Install\WindowsExplorerContextMenuInstaller.cs" />
     <Compile Include="Infrastructure\CommandProvider.cs" />
