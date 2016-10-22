@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NCmdLiner.Attributes;
+﻿using NCmdLiner.Attributes;
 using NMultiTool.Library.Infrastructure;
 using NMultiTool.Library.Module.Commands.BackupGitRepositories;
 
