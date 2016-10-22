@@ -5,7 +5,7 @@ NMultiTool provides commands useful during build or install of an application or
 ##Usage
 
 ```
-NMultiTool 1.0.16285.48.9d540f1 - NMultiTool provides commands useful during build or install of an application or library
+NMultiTool 1.0.16296.49.95c1f7b - NMultiTool provides commands useful during build or install of an application or library
 Copyright © github.trondr 2016
 Author: trondr@outlook.com
 Usage: NMultiTool.exe <command> [parameters]
@@ -187,6 +187,7 @@ SplitIco                  Split an icon file into multiple images
 
    Example: NMultiTool.exe SplitIco /icoFileName="c:\temp\test.ico" 
    Example (alternative): NMultiTool.exe SplitIco /ico="c:\temp\test.ico" 
+ 
 ```
 
 ## Minimum Build Requirements
