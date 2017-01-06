@@ -18,10 +18,10 @@ using System.Runtime.InteropServices;
     "library")]
 [assembly: AssemblyCompany("github.trondr")]
 [assembly: AssemblyProduct("NMultiTool.Gui")]
-[assembly: AssemblyCopyright("Copyright © github.trondr 2016")]
+[assembly: AssemblyCopyright("Copyright © github.trondr 2017")]
 [assembly: CLSCompliant(false)]
-[assembly: AssemblyInformationalVersion("1.0.16296.49.95c1f7b")]
-[assembly: AssemblyVersion("1.0.16296.49")]
-[assembly: AssemblyFileVersion("1.0.16296.49")]
+[assembly: AssemblyInformationalVersion("1.0.17006.50.7d2939a")]
+[assembly: AssemblyVersion("1.0.17006.50")]
+[assembly: AssemblyFileVersion("1.0.17006.50")]
 
 
