@@ -44,7 +44,7 @@ namespace NMultiTool.Library.Module.Commands.BackupGitRepositories
             using (new ChangeCurrentDirectory(localBackupRepositoryFolder))
             {
                 _process.Reset();
-                _process.Execute("git.exe", "pull", true, localBackupRepositoryFolder);
+                _process.Execute("git.exe", "fetch", true, localBackupRepositoryFolder);
                 _logger.Info(_process.StandardOutput);
             }
         }
