@@ -13,7 +13,7 @@ namespace NMultiTool.Library.Module.Commands.BackupGitRepositories
             var sourceOwner = GetRepositoryOwner(sourceUri);
             var repositoryName = GetRepositoryName(sourceUri);
             var sourceRoot = string.Format("{0}-{1}", sourceHost, sourceOwner);
-            var repositoryBackupFolder = Path.Combine(rootBackupFolder, sourceRoot, repositoryName);
+            var repositoryBackupFolder = Path.Combine(rootBackupFolder, sourceRoot, repositoryName) + ".git";
             return repositoryBackupFolder;
         }
 

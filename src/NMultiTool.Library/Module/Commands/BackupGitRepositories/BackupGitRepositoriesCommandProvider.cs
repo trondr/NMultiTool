@@ -56,7 +56,7 @@ namespace NMultiTool.Library.Module.Commands.BackupGitRepositories
                 Directory.CreateDirectory(localBackupRepositoryFolder);
             }
             _process.Reset();
-            var arguments = string.Format("clone \"{0}\" \"{1}\"", sourceUrl, localBackupRepositoryFolder);
+            var arguments = string.Format("clone --bare \"{0}\" \"{1}\"", sourceUrl, localBackupRepositoryFolder);
             _process.Execute("git.exe", arguments, true, localBackupRepositoryFolder);
             _logger.Info(_process.StandardOutput);
         }
