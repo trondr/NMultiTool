@@ -19,10 +19,18 @@ namespace NMultiTool.Library.Module.Commands.Folder2Wxs
             _logger = logger;
         }
 
-        public void Harvest(string path, string wsxFileName, string targetFolderId, string componentGroupId, string[] diskIds,
-            bool addExecutables2AppsPath)
+        public void Harvest(string path, string wsxFileName, string targetFolderId, string componentGroupId, string[] diskIds, bool addExecutables2AppsPath, bool enableKeyPath, string companyName, string applicationName)
         {            
             if (!Directory.Exists(path)) throw new DirectoryNotFoundException(path);
+
+            if (!enableKeyPath)
+            {
+                if (string.IsNullOrWhiteSpace(companyName))
+                    throw new ArgumentException("/companyName must be specified on the command line.");
+                if (string.IsNullOrWhiteSpace(applicationName))
+                    throw new ArgumentException("/applicationName must be specified on the command line.");
+            }
+
             if (_logger.IsInfoEnabled) _logger.InfoFormat("Harvesting to wsx from directory '{0}'...", path);
             var wsxXmlDocument = new XmlDocument();
             var xmlDeclaration = wsxXmlDocument.CreateXmlDeclaration("1.0", "utf-8", String.Empty);
@@ -42,15 +50,22 @@ namespace NMultiTool.Library.Module.Commands.Folder2Wxs
             fragment2.AppendChild(componentGroupXmlNode);
             var directoryRefElement = wsxXmlDocument.CreateElement("DirectoryRef");
             _xmlHelper.SetAttribute(directoryRefElement, "Id", targetFolderId);
-            fragment1.AppendChild(directoryRefElement);
-            AddDirectory(new DirectoryInfo(path), directoryRefElement, componentGroupXmlNode, targetFolderId, diskIds, addExecutables2AppsPath);
+            fragment1.AppendChild(directoryRefElement);            
+            AddDirectory(new DirectoryInfo(path), directoryRefElement, componentGroupXmlNode, targetFolderId, diskIds, addExecutables2AppsPath, enableKeyPath, companyName, applicationName);
             _xmlHelper.SaveDocument(wsxXmlDocument, wsxFileName);
             if (_logger.IsInfoEnabled) _logger.InfoFormat("Finished harvesting to wsx from directory '{0}'...", path);
         }
 
         #region Private methods
-        private void AddDirectory(DirectoryInfo directory, XmlElement directoryRefElement, XmlElement componentGroupElement,
-                             string targetFolderId, string[] diskIds, bool addExesToAppsPath)
+        private void AddDirectory(DirectoryInfo directory, 
+            XmlElement directoryRefElement, 
+            XmlElement componentGroupElement, 
+            string targetFolderId,
+            string[] diskIds, 
+            bool addExesToAppsPath, 
+            bool enableKeyPath, 
+            string companyName, 
+            string applicationName)
         {            
             var files = directory.GetFiles();
             foreach (var fileInfo in files)
@@ -88,7 +103,24 @@ namespace NMultiTool.Library.Module.Commands.Folder2Wxs
                     var fileId = _idFromNameGenerator.GetId(fileInfo.Name, "WixFile");
                     _xmlHelper.SetAttribute(fileElement, "Id", fileId);
                     _xmlHelper.SetAttribute(fileElement, "Name", fileInfo.Name);
-                    _xmlHelper.SetAttribute(fileElement, "KeyPath", "yes");
+                    if (enableKeyPath)
+                    {
+                        _xmlHelper.SetAttribute(fileElement, "KeyPath", "yes");
+                    }
+                    else
+                    {
+                        _xmlHelper.SetAttribute(fileElement, "KeyPath", "no");
+                        var registryKeyElement = directoryRefElement.OwnerDocument.CreateElement("RegistryKey");
+                        _xmlHelper.SetAttribute(registryKeyElement, "Root", "HKCU");
+                        _xmlHelper.SetAttribute(registryKeyElement, "Key", $"Software\\{companyName}\\{applicationName}");                        
+                        componentElement.AppendChild(registryKeyElement);
+                        var registryValueElement = directoryRefElement.OwnerDocument.CreateElement("RegistryValue");
+                        _xmlHelper.SetAttribute(registryValueElement, "Name", "Version");
+                        _xmlHelper.SetAttribute(registryValueElement, "Value", "[ProductVersion]");
+                        _xmlHelper.SetAttribute(registryValueElement, "Type", "string");
+                        _xmlHelper.SetAttribute(registryValueElement, "KeyPath", "yes");
+                        registryKeyElement.AppendChild(registryValueElement);
+                    }
                     _xmlHelper.SetAttribute(fileElement, "Source", fileInfo.FullName);
                     componentElement.AppendChild(fileElement);
 
@@ -139,7 +171,7 @@ namespace NMultiTool.Library.Module.Commands.Folder2Wxs
                         _xmlHelper.SetAttribute(directoryXmlElement, "Id", directoryId);
                         _xmlHelper.SetAttribute(directoryXmlElement, "Name", fileInfo.Name);
                         directoryRefElement.AppendChild(directoryXmlElement);
-                        AddDirectory(fileInfo, directoryXmlElement, componentGroupElement, targetFolderId, diskIds, addExesToAppsPath);
+                        AddDirectory(fileInfo, directoryXmlElement, componentGroupElement, targetFolderId, diskIds, addExesToAppsPath, enableKeyPath, companyName, applicationName);
                     }
                     else
                     {

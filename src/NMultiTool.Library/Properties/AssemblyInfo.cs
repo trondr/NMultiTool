@@ -20,8 +20,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("NMultiTool.Library")]
 [assembly: AssemblyCopyright("Copyright © github.trondr 2017")]
 [assembly: CLSCompliant(false)]
-[assembly: AssemblyInformationalVersion("1.0.17006.51.a0bc5eb")]
-[assembly: AssemblyVersion("1.0.17006.51")]
-[assembly: AssemblyFileVersion("1.0.17006.51")]
+[assembly: AssemblyInformationalVersion("1.0.17112.52.e78d2cc")]
+[assembly: AssemblyVersion("1.0.17112.52")]
+[assembly: AssemblyFileVersion("1.0.17112.52")]
 
 

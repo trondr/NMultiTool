@@ -2,6 +2,6 @@
 {
     public interface IFolder2Wxs
     {
-        void Harvest(string path, string wsxFileName, string targetFolderId, string componentGroupId, string[] diskIds, bool addExecutables2AppsPath);
+        void Harvest(string path, string wsxFileName, string targetFolderId, string componentGroupId, string[] diskIds, bool addExecutables2AppsPath, bool enableKeyPath, string companyName, string applicationName);
     }
 }

@@ -49,14 +49,32 @@ namespace NMultiTool.Module.Commands
                 )] string[] diskIds,
             [RequiredCommandParameter(
                 Description = "Specify that any executables in the directory shall be added to apps path when installed by the Wix setup",
-                ExampleValue = "True",
+                ExampleValue = true,
                 AlternativeName = "af"
-                )] bool addExecutables2AppsPath            
+                )] bool addExecutables2AppsPath,
+            [OptionalCommandParameter(
+                    Description = "Set KeyPath=Yes on all files harvested. If installing application using install scope 'perUser', enableKeyPath must be set to false.",
+                    ExampleValue = true,
+                    DefaultValue = true,
+                    AlternativeName = "ekp"
+                )] bool enableKeyPath,
+                [OptionalCommandParameter(
+                    Description = "Company name to use in HKCU registry setting if enabledKeyPath is set to False",
+                    ExampleValue = "MyCompany",
+                    DefaultValue = "",
+                    AlternativeName = "co"
+                )] string companyName,
+                [OptionalCommandParameter(
+                    Description = "Application name to use in HKCU registry setting if enabledKeyPath is set to False",
+                    ExampleValue = "MyApplication",
+                    DefaultValue = "",
+                    AlternativeName = "an"
+                )] string applicationName
             )
         {
             var returnValue = 0;
             _logger.Info("Start: Folder2Wxs");            
-            _folder2Wxs.Harvest(harvestFolder,wxsFileName,targetFolderId,componentGroupId,diskIds,addExecutables2AppsPath);
+            _folder2Wxs.Harvest(harvestFolder,wxsFileName,targetFolderId,componentGroupId,diskIds,addExecutables2AppsPath, enableKeyPath, companyName, applicationName);
             _logger.Info("Stop: Folder2Wxs");
             return returnValue;
         }
