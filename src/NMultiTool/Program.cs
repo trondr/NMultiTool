@@ -23,13 +23,14 @@ namespace NMultiTool
                     // ReSharper disable once CoVariantArrayConversion
                     object[] commandTargets = BootStrapper.Container.ResolveAll<CommandDefinition>();
                     logger.InfoFormat("Start: {0}.{1}. Command line: {2}", applicationInfo.Name, applicationInfo.Version, Environment.CommandLine);                    
-                    returnValue = CmdLinery.Run(commandTargets, args, applicationInfo, BootStrapper.Container.Resolve<IMessenger>());
+                    CmdLinery.RunEx(commandTargets, args, applicationInfo, BootStrapper.Container.Resolve<IMessenger>())
+                        .OnFailure(exception =>
+                        {
+                            logger.Error(exception.Message);
+                            returnValue = 1;
+                        })
+                        .OnSuccess(i => returnValue = i);
                     return returnValue;
-                }
-                catch (MissingCommandException ex)
-                {
-                    logger.ErrorFormat("Missing command. {0}", ex.Message);
-                    returnValue = 1;
                 }
                 catch (Exception ex)
                 {

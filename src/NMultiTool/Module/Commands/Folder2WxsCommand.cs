@@ -1,5 +1,6 @@
 ﻿using System;
 using Common.Logging;
+using NCmdLiner;
 using NCmdLiner.Attributes;
 using NMultiTool.Library.Infrastructure;
 using NMultiTool.Library.Module.Commands.Folder2Wxs;
@@ -20,7 +21,7 @@ namespace NMultiTool.Module.Commands
         [CLSCompliant(false)]
         [Command(Description = "Harvest files and sub folders into a Wxs file for inclusion into a WiX setup project."
             )]
-        public int Folder2Wxs
+        public Result<int> Folder2Wxs
             (
                 [RequiredCommandParameter(
                 Description = "Path to harvest folder. All files and sub folders in this folder will be harvested",
@@ -69,14 +70,44 @@ namespace NMultiTool.Module.Commands
                     ExampleValue = "MyApplication",
                     DefaultValue = "",
                     AlternativeName = "an"
-                )] string applicationName
+                )] string applicationName,
+                [OptionalCommandParameter(
+                    Description = "Indicate if wix components should be marked with Win64 attribute. Valid values are 'yes' or 'no' or 'var.Win64'.",
+                    ExampleValue = "yes",
+                    DefaultValue = "no",
+                    AlternativeName = "is64"
+                )] string isWin64
             )
         {
             var returnValue = 0;
-            _logger.Info("Start: Folder2Wxs");            
-            _folder2Wxs.Harvest(harvestFolder,wxsFileName,targetFolderId,componentGroupId,diskIds,addExecutables2AppsPath, enableKeyPath, companyName, applicationName);
-            _logger.Info("Stop: Folder2Wxs");
-            return returnValue;
+            _logger.Info("Start: Folder2Wxs");
+            try
+            {
+                var harvestInfo = new HarvestInfo
+                {
+                    Path = harvestFolder,
+                    WsxFileName = wxsFileName,
+                    TargetFolderId = targetFolderId,
+                    ComponentGroupId = componentGroupId,
+                    DiskIds = diskIds,
+                    AddExecutables2AppsPath = addExecutables2AppsPath,
+                    EnableKeyPath = enableKeyPath,
+                    CompanyName = companyName,
+                    ApplicationName = applicationName,
+                    IsWin64 = isWin64
+                };
+                _folder2Wxs.Harvest(harvestInfo);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e.Message);
+                returnValue = 1;
+            }
+            finally
+            {
+                _logger.Info("Stop: Folder2Wxs");
+            }
+            return Result.Ok(returnValue);
         }
     }
 }

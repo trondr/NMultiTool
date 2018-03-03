@@ -18,23 +18,30 @@ namespace NMultiTool.Library.Module.Commands.Folder2Wxs
             _xmlHelper = xmlHelper;
             _logger = logger;
         }
-
-        public void Harvest(string path, string wsxFileName, string targetFolderId, string componentGroupId, string[] diskIds, bool addExecutables2AppsPath, bool enableKeyPath, string companyName, string applicationName)
-        {            
-            if (!Directory.Exists(path)) throw new DirectoryNotFoundException(path);
-
-            if (!enableKeyPath)
+        
+        public void Harvest(HarvestInfo harvestInfo)
+        {
+            if (!harvestInfo.EnableKeyPath)
             {
-                if (string.IsNullOrWhiteSpace(companyName))
+                if (string.IsNullOrWhiteSpace(harvestInfo.CompanyName))
                     throw new ArgumentException("/companyName must be specified on the command line.");
-                if (string.IsNullOrWhiteSpace(applicationName))
+                if (string.IsNullOrWhiteSpace(harvestInfo.ApplicationName))
                     throw new ArgumentException("/applicationName must be specified on the command line.");
             }
 
-            if (_logger.IsInfoEnabled) _logger.InfoFormat("Harvesting to wsx from directory '{0}'...", path);
+            if (_logger.IsInfoEnabled) _logger.InfoFormat("Harvesting to wsx from directory '{0}'...", harvestInfo.Path.Value);
             var wsxXmlDocument = new XmlDocument();
             var xmlDeclaration = wsxXmlDocument.CreateXmlDeclaration("1.0", "utf-8", String.Empty);
             wsxXmlDocument.AppendChild(xmlDeclaration);
+
+            wsxXmlDocument.AppendChild(wsxXmlDocument.CreateProcessingInstruction("if", $"$(var.Platform) = x64"));
+            wsxXmlDocument.AppendChild(wsxXmlDocument.CreateProcessingInstruction("define", $"bitness = \"(64 bit)\""));
+            wsxXmlDocument.AppendChild(wsxXmlDocument.CreateProcessingInstruction("define", $"Win64 = \"yes\""));
+            wsxXmlDocument.AppendChild(wsxXmlDocument.CreateProcessingInstruction("else", string.Empty));
+            wsxXmlDocument.AppendChild(wsxXmlDocument.CreateProcessingInstruction("define", $"bitness = \"(32 bit)\""));
+            wsxXmlDocument.AppendChild(wsxXmlDocument.CreateProcessingInstruction("define", $"Win64 = \"no\""));
+            wsxXmlDocument.AppendChild(wsxXmlDocument.CreateProcessingInstruction("endif", string.Empty));
+
             var wsxRootElement = wsxXmlDocument.CreateElement("Wix");
             wsxXmlDocument.AppendChild(wsxRootElement);
             _xmlHelper.SetAttribute(wsxXmlDocument.DocumentElement, "xmlns", "http://schemas.microsoft.com/wix/2006/wi");
@@ -46,14 +53,14 @@ namespace NMultiTool.Library.Module.Commands.Folder2Wxs
             if (wsxXmlDocument.DocumentElement == null) throw new XmlException("xmldocument document element is null");
             wsxXmlDocument.DocumentElement.AppendChild(fragment2);
             var componentGroupXmlNode = wsxXmlDocument.CreateElement("ComponentGroup");
-            _xmlHelper.SetAttribute(componentGroupXmlNode, "Id", componentGroupId);
+            _xmlHelper.SetAttribute(componentGroupXmlNode, "Id", harvestInfo.ComponentGroupId);
             fragment2.AppendChild(componentGroupXmlNode);
             var directoryRefElement = wsxXmlDocument.CreateElement("DirectoryRef");
-            _xmlHelper.SetAttribute(directoryRefElement, "Id", targetFolderId);
-            fragment1.AppendChild(directoryRefElement);            
-            AddDirectory(new DirectoryInfo(path), directoryRefElement, componentGroupXmlNode, targetFolderId, diskIds, addExecutables2AppsPath, enableKeyPath, companyName, applicationName);
-            _xmlHelper.SaveDocument(wsxXmlDocument, wsxFileName);
-            if (_logger.IsInfoEnabled) _logger.InfoFormat("Finished harvesting to wsx from directory '{0}'...", path);
+            _xmlHelper.SetAttribute(directoryRefElement, "Id", harvestInfo.TargetFolderId);
+            fragment1.AppendChild(directoryRefElement);
+            AddDirectory(new DirectoryInfo(harvestInfo.Path.Value), directoryRefElement, componentGroupXmlNode, harvestInfo.TargetFolderId, harvestInfo.DiskIds, harvestInfo.AddExecutables2AppsPath, harvestInfo.EnableKeyPath, harvestInfo.CompanyName, harvestInfo.ApplicationName,harvestInfo.IsWin64.Value);
+            _xmlHelper.SaveDocument(wsxXmlDocument, harvestInfo.WsxFileName);
+            if (_logger.IsInfoEnabled) _logger.InfoFormat("Finished harvesting to wsx from directory '{0}'...", harvestInfo.Path.Value);
         }
 
         #region Private methods
@@ -65,7 +72,8 @@ namespace NMultiTool.Library.Module.Commands.Folder2Wxs
             bool addExesToAppsPath, 
             bool enableKeyPath, 
             string companyName, 
-            string applicationName)
+            string applicationName,
+            string isWin64)
         {            
             var files = directory.GetFiles();
             foreach (var fileInfo in files)
@@ -83,6 +91,7 @@ namespace NMultiTool.Library.Module.Commands.Folder2Wxs
                     _xmlHelper.SetAttribute(componentElement, "Id", componentId);
                     _xmlHelper.SetAttribute(componentElement, "Guid", Guid.NewGuid().ToString().ToUpper());
                     _xmlHelper.SetAttribute(componentElement, "DiskId", GetRandomDiskId(diskIds));
+                    _xmlHelper.SetAttribute(componentElement, "Win64", isWin64);
                     directoryRefElement.AppendChild(componentElement);
                     if (directoryRefElement.OwnerDocument == null) throw new ArgumentNullException("directoryRefElement", "directoryRefElement.OwnerDocument is null.");
                     var createFolderElement = directoryRefElement.OwnerDocument.CreateElement("CreateFolder");
@@ -171,7 +180,7 @@ namespace NMultiTool.Library.Module.Commands.Folder2Wxs
                         _xmlHelper.SetAttribute(directoryXmlElement, "Id", directoryId);
                         _xmlHelper.SetAttribute(directoryXmlElement, "Name", fileInfo.Name);
                         directoryRefElement.AppendChild(directoryXmlElement);
-                        AddDirectory(fileInfo, directoryXmlElement, componentGroupElement, targetFolderId, diskIds, addExesToAppsPath, enableKeyPath, companyName, applicationName);
+                        AddDirectory(fileInfo, directoryXmlElement, componentGroupElement, targetFolderId, diskIds, addExesToAppsPath, enableKeyPath, companyName, applicationName,isWin64);
                     }
                     else
                     {

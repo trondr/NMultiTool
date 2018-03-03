@@ -9,7 +9,7 @@
 using System;
 using System.IO;
 using System.Reflection;
-using NCmdLiner.Resources;
+
 
 namespace NMultiTool.Library.Module.Common.Resources
 {

@@ -9,7 +9,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace NCmdLiner.Resources
+namespace NMultiTool.Library.Module.Common.Resources
 {
     /// <summary>  Interface for embedded resource.  </summary>
     public interface IEmbeddedResource

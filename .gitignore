@@ -51,3 +51,4 @@ Doc\Help
 */tools/NuGetPackages/Newtonsoft.Json.*/*
 */tools/NuGetPackages/RhinoMocks.*/*
 */tools/NuGetPackages/log4net.*/*
+.vs/

@@ -5,8 +5,8 @@ NMultiTool provides commands useful during build or install of an application or
 ##Usage
 
 ```
-NMultiTool 1.0.17006.51.a0bc5eb - NMultiTool provides commands useful during build or install of an application or library
-Copyright © github.trondr 2017
+NMultiTool 1.0.18062.53.9c4d7e2 - NMultiTool provides commands useful during build or install of an application or library
+Copyright © github.trondr 2018
 Author: trondr@outlook.com
 Usage: NMultiTool.exe <command> [parameters]
 
@@ -156,9 +156,24 @@ Folder2Wxs                Harvest files and sub folders into a Wxs file for
                           directory shall be added to apps path when
                           installed by the Wix setup Alternative parameter
                           name: /af
+   /enableKeyPath         [Optional] Set KeyPath=Yes on all files harvested.
+                          If installing application using install scope
+                          'perUser', enableKeyPath must be set to false.
+                          Alternative parameter name: /ekp. Default value:
+                          True
+   /companyName           [Optional] Company name to use in HKCU registry
+                          setting if enabledKeyPath is set to False
+                          Alternative parameter name: /co. Default value:
+   /applicationName       [Optional] Application name to use in HKCU registry
+                          setting if enabledKeyPath is set to False
+                          Alternative parameter name: /an. Default value:
+   /isWin64               [Optional] Indicate if wix components should be
+                          marked with Win64 attribute. Valid values are 'yes'
+                          or 'no' or 'var.Win64'. Alternative parameter name:
+                          /is64. Default value: no
 
-   Example: NMultiTool.exe Folder2Wxs /harvestFolder="c:\temp\SomeSourceDirectory" /wxsFileName="c:\temp\MySetupProject\Components.wxs" /targetFolderId="TargetFolder" /componentGroupId="Components_WixComponentGroup" /diskIds="['1';'2';'3']" /addExecutables2AppsPath="True" 
-   Example (alternative): NMultiTool.exe Folder2Wxs /d="c:\temp\SomeSourceDirectory" /wf="c:\temp\MySetupProject\Components.wxs" /ti="TargetFolder" /ci="Components_WixComponentGroup" /di="['1';'2';'3']" /af="True" 
+   Example: NMultiTool.exe Folder2Wxs /harvestFolder="c:\temp\SomeSourceDirectory" /wxsFileName="c:\temp\MySetupProject\Components.wxs" /targetFolderId="TargetFolder" /componentGroupId="Components_WixComponentGroup" /diskIds="['1';'2';'3']" /addExecutables2AppsPath="True" /enableKeyPath="True" /companyName="MyCompany" /applicationName="MyApplication" /isWin64="yes" 
+   Example (alternative): NMultiTool.exe Folder2Wxs /d="c:\temp\SomeSourceDirectory" /wf="c:\temp\MySetupProject\Components.wxs" /ti="TargetFolder" /ci="Components_WixComponentGroup" /di="['1';'2';'3']" /af="True" /ekp="True" /co="MyCompany" /an="MyApplication" /is64="yes" 
 
 
 InstallUtil               InstallUtil processes specified .NET assemblies and
@@ -186,15 +201,17 @@ SplitIco                  Split an icon file into multiple images
                           Alternative parameter name: /ico
 
    Example: NMultiTool.exe SplitIco /icoFileName="c:\temp\test.ico" 
-   Example (alternative): NMultiTool.exe SplitIco /ico="c:\temp\test.ico"  
+   Example (alternative): NMultiTool.exe SplitIco /ico="c:\temp\test.ico" 
  
 ```
 
 ## Minimum Build Requirements
 
-* MSBuild Tools 2015 (http://www.microsoft.com/en-us/download/details.aspx?id=48159)
-* Windows SDK for Windows 8.1 (http://msdn.microsoft.com/en-us/windows/desktop/bg162891.aspx)
-* .NET Framework 4.5.2 Runtime (http://go.microsoft.com/fwlink/?LinkId=397674)
-* .NET Framework 4.5.2 Developer Pack (http://go.microsoft.com/fwlink/?LinkId=328857)
-* .NET Framework 2.0/3.5 (Install from Windows Features)
-* Wix Toolset 3.10 (http://wix.codeplex.com/releases/view/617257)
+1. Build Tools for Visual Studio 2017 (https://www.visualstudio.com/downloads)
+  * Browse down to: Other Tools and Frameworks->Build Tools for Visual Studio 2017
+  * Install: vs_buildtools__164170290.1519403159.exe
+    * Include: Targeting pack for .NET 4.5.2
+    * Include: Nuget targets and build tasks
+2. Install latest Wix 3.11 (https://github.com/wixtoolset/wix3/releases/download/wix3111rtm/wix311.exe)
+  * On a 32 bit system: Copy "C:\Program Files\MSBuild\Microsoft\WiX" -> "C:\Program Files\Microsoft Visual Studio\2017\BuildTools\MSBuild\Microsoft\WiX"
+  * On a 64 bit system: Copy "C:\Program Files (x86)\MSBuild\Microsoft\WiX" -> "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\Microsoft\WiX"
