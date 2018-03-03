@@ -8,6 +8,11 @@ using Castle.Windsor;
 using Common.Logging;
 using NCmdLiner;
 using NMultiTool.Library.Infrastructure;
+using NMultiTool.Library.Module.Commands.ConvertAllSvgToIco;
+using NMultiTool.Library.Module.Commands.ConvertSvgToIco;
+using NMultiTool.Library.Module.Commands.Folder2Wxs;
+using NMultiTool.Library.Module.Commands.InstallUtil;
+using NMultiTool.Library.Module.Commands.SplitIco;
 using NMultiTool.Library.Module.ViewModels;
 using NMultiTool.Library.Module.Views;
 using SingletonAttribute = NMultiTool.Library.Infrastructure.SingletonAttribute;
@@ -38,12 +43,41 @@ namespace NMultiTool.Infrastructure
 
             //Factory registrations example:
 
-            //container.Register(Component.For<ITeamProviderFactory>().AsFactory());
-            //container.Register(
-            //    Component.For<ITeamProvider>()
-            //        .ImplementedBy<CsvTeamProvider>()
-            //        .Named("CsvTeamProvider")
-            //        .LifeStyle.Transient);
+            container.Register(Component.For<IFolder2WxsCommandProviderFactory>().AsFactory());
+            container.Register(
+                Component.For<IFolder2WxsCommandProvider>()
+                    .ImplementedBy<Folder2WxsCommandProvider>()
+                    .Named(typeof(Folder2WxsCommandProvider).Name)
+                    .LifeStyle.Transient);
+
+            container.Register(Component.For<IInstallUtilCommandProviderFactory>().AsFactory());
+            container.Register(
+                Component.For<IInstallUtilCommandProvider>()
+                    .ImplementedBy<InstallUtilCommandProvider>()
+                    .Named(typeof(InstallUtilCommandProvider).Name)
+                    .LifeStyle.Transient);
+
+            container.Register(Component.For<ISplitIcoCommandProviderFactory>().AsFactory());
+            container.Register(
+                Component.For<ISplitIcoCommandProvider>()
+                    .ImplementedBy<SplitIcoCommandProvider>()
+                    .Named(typeof(SplitIcoCommandProvider).Name)
+                    .LifeStyle.Transient);
+
+            container.Register(Component.For<IConvertSvgToIcoCommandProviderFactory>().AsFactory());
+            container.Register(
+                Component.For<IConvertSvgToIcoCommandProvider>()
+                    .ImplementedBy<ConvertSvgToIcoCommandProvider>()
+                    .Named(typeof(ConvertSvgToIcoCommandProvider).Name)
+                    .LifeStyle.Transient);
+
+            container.Register(Component.For<IConvertAllSvgToIcoCommandProviderFactory>().AsFactory());
+            container.Register(
+                Component.For<IConvertAllSvgToIcoCommandProvider>()
+                    .ImplementedBy<ConvertAllSvgToIcoCommandProvider>()
+                    .Named(typeof(ConvertAllSvgToIcoCommandProvider).Name)
+                    .LifeStyle.Transient);
+            
             //container.Register(
             //    Component.For<ITeamProvider>()
             //        .ImplementedBy<SqlTeamProvider>()

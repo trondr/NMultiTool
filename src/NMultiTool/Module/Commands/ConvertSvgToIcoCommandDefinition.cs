@@ -1,20 +1,21 @@
-﻿using NCmdLiner.Attributes;
+﻿using NCmdLiner;
+using NCmdLiner.Attributes;
 using NMultiTool.Library.Infrastructure;
 using NMultiTool.Library.Module.Commands.ConvertSvgToIco;
 
 namespace NMultiTool.Module.Commands
 {
-    public class ConvertSvgToIcoCommand : CommandDefinition
+    public class ConvertSvgToIcoCommandDefinition : CommandDefinition
     {
-        private readonly IConvertSvgToIcoCommandProvider _convertSvgToIcoCommandProvider;
-
-        public ConvertSvgToIcoCommand(IConvertSvgToIcoCommandProvider convertSvgToIcoCommandProvider)
+        private readonly IConvertSvgToIcoCommandProviderFactory _convertSvgToIcoCommandProviderFactory;
+        
+        public ConvertSvgToIcoCommandDefinition(IConvertSvgToIcoCommandProviderFactory convertSvgToIcoCommandProviderFactory)
         {
-            _convertSvgToIcoCommandProvider = convertSvgToIcoCommandProvider;
+            _convertSvgToIcoCommandProviderFactory = convertSvgToIcoCommandProviderFactory;            
         }
 
         [Command(Description = "Convert a .svg vector graphics file to a multi size .ico file.")]
-        public int ConvertSvgToIco(
+        public Result<int> ConvertSvgToIco(
             [RequiredCommandParameter(
                 Description = "Path to vector graphics file having format *.svg", 
                 AlternativeName = "svg", 
@@ -36,7 +37,15 @@ namespace NMultiTool.Module.Commands
             int[] sizes
             )
         {
-            return _convertSvgToIcoCommandProvider.ConvertSvgToIco(svgFileName, sizes, refresh);
+            var convertSvgToIcoCommandProvider = _convertSvgToIcoCommandProviderFactory.GetConvertSvgToIcoCommandProvider();
+            try
+            {
+                return convertSvgToIcoCommandProvider.ConvertSvgToIco(svgFileName, sizes, refresh);
+            }
+            finally
+            {
+                _convertSvgToIcoCommandProviderFactory.Release(convertSvgToIcoCommandProvider);
+            }
         }
     }
 }

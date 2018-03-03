@@ -7,14 +7,14 @@ using NMultiTool.Library.Module.Commands.Folder2Wxs;
 
 namespace NMultiTool.Module.Commands
 {
-    public class Folder2WxsCommand: CommandDefinition
+    public class Folder2WxsCommandDefinition: CommandDefinition
     {
-        private readonly IFolder2Wxs _folder2Wxs;
+        private readonly IFolder2WxsCommandProviderFactory _folder2WxsCommandProviderFactory;
         private readonly ILog _logger;
 
-        public Folder2WxsCommand(IFolder2Wxs folder2Wxs,ILog logger)
+        public Folder2WxsCommandDefinition(IFolder2WxsCommandProviderFactory folder2WxsCommandProviderFactory,ILog logger)
         {
-            _folder2Wxs = folder2Wxs;
+            _folder2WxsCommandProviderFactory = folder2WxsCommandProviderFactory;
             _logger = logger;
         }
 
@@ -81,6 +81,7 @@ namespace NMultiTool.Module.Commands
         {
             var returnValue = 0;
             _logger.Info("Start: Folder2Wxs");
+            var folder2WxsCommandProvider =  _folder2WxsCommandProviderFactory.GetFolder2WxsCommandProvider();
             try
             {
                 var harvestInfo = new HarvestInfo
@@ -96,7 +97,7 @@ namespace NMultiTool.Module.Commands
                     ApplicationName = applicationName,
                     IsWin64 = isWin64
                 };
-                _folder2Wxs.Harvest(harvestInfo);
+                return folder2WxsCommandProvider.Folder2Wxs(harvestInfo);                
             }
             catch (Exception e)
             {
@@ -105,6 +106,7 @@ namespace NMultiTool.Module.Commands
             }
             finally
             {
+                _folder2WxsCommandProviderFactory.Release(folder2WxsCommandProvider);
                 _logger.Info("Stop: Folder2Wxs");
             }
             return Result.Ok(returnValue);

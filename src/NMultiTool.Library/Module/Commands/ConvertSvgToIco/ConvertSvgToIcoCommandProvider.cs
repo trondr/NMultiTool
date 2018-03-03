@@ -1,5 +1,6 @@
 using System.IO;
 using Common.Logging;
+using NCmdLiner;
 using NMultiTool.Library.Module.Commands.ConvertAllSvgToIco;
 
 namespace NMultiTool.Library.Module.Commands.ConvertSvgToIco
@@ -20,7 +21,7 @@ namespace NMultiTool.Library.Module.Commands.ConvertSvgToIco
             _logger = logger;
         }
         
-        public int ConvertSvgToIco(string svgFileName, int[] sizes, bool refresh)
+        public Result<int> ConvertSvgToIco(string svgFileName, int[] sizes, bool refresh)
         {
             var exitCode = 0;
             VerifySvgFile(svgFileName);
@@ -36,7 +37,7 @@ namespace NMultiTool.Library.Module.Commands.ConvertSvgToIco
             {
                 _logger.Info("Icon up to date: " + iconInfo.IconFile.FullName);
             }
-            return exitCode;
+            return Result.Ok(exitCode);
         }
 
         private void VerifySvgFile(string svgFileName)

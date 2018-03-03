@@ -1,16 +1,17 @@
-﻿using NCmdLiner.Attributes;
+﻿using NCmdLiner;
+using NCmdLiner.Attributes;
 using NMultiTool.Library.Infrastructure;
 using NMultiTool.Library.Module.Commands.ConvertAllSvgToIco;
 
 namespace NMultiTool.Module.Commands
 {
-    public class ConvertAllSvgToIcoCommand : CommandDefinition
+    public class ConvertAllSvgToIcoCommandDefinition : CommandDefinition
     {
-        private readonly IConvertAllSvgToIcoCommandProvider _convertAllSvgToIcoCommandProvider;
-
-        public ConvertAllSvgToIcoCommand(IConvertAllSvgToIcoCommandProvider convertAllSvgToIcoCommandProvider)
+        private readonly IConvertAllSvgToIcoCommandProviderFactory _convertAllSvgToIcoCommandProviderFactory;
+        
+        public ConvertAllSvgToIcoCommandDefinition(IConvertAllSvgToIcoCommandProviderFactory convertAllSvgToIcoCommandProviderFactory)
         {
-            _convertAllSvgToIcoCommandProvider = convertAllSvgToIcoCommandProvider;
+            _convertAllSvgToIcoCommandProviderFactory = convertAllSvgToIcoCommandProviderFactory;            
         }
 
         [Command(Description = "Convert svg files in folder (and subfolders if recursive==true) to multi size icon files of specified sizes.")]
@@ -26,9 +27,15 @@ namespace NMultiTool.Module.Commands
             [OptionalCommandParameter(Description = "Run specified number of conversions in parallel.", AlternativeName = "p", DefaultValue = 4, ExampleValue = 4)]
             int maxDegreeOfParallelism)
         {
-            var exitCode = _convertAllSvgToIcoCommandProvider.ConvertAllSvgToIco(folder, recursive, refresh,
-                sizes, maxDegreeOfParallelism);
-            return exitCode;
+            var commandProvider = _convertAllSvgToIcoCommandProviderFactory.GetConvertAllSvgToIcoCommandProvider();
+            try
+            {
+                return commandProvider.ConvertAllSvgToIco(folder, recursive, refresh,sizes, maxDegreeOfParallelism);
+            }
+            finally
+            {
+                _convertAllSvgToIcoCommandProviderFactory.Release(commandProvider);
+            }
         }
     }
 }

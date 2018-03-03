@@ -1,9 +1,9 @@
-﻿using System.Windows.Media;
+﻿using NCmdLiner;
 
 namespace NMultiTool.Library.Module.Commands.SplitIco
 {
     public interface ISplitIcoCommandProvider
     {
-        int SplitIco(string icoFileName);
+        Result<int> SplitIco(string icoFileName);
     }
 }

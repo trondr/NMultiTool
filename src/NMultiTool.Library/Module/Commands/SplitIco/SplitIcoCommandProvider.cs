@@ -1,11 +1,12 @@
 ﻿using System.IO;
 using ImageMagick;
+using NCmdLiner;
 
 namespace NMultiTool.Library.Module.Commands.SplitIco
 {
     public class SplitIcoCommandProvider : ISplitIcoCommandProvider
     {
-        public int SplitIco(string icoFileName)
+        public Result<int> SplitIco(string icoFileName)
         {
             var fullName = Path.GetFullPath(icoFileName);
             var folder = Path.GetDirectoryName(fullName);
@@ -20,7 +21,7 @@ namespace NMultiTool.Library.Module.Commands.SplitIco
                     image.Write(pngFile);
                 }
             }
-            return 0;
+            return Result.Ok(0);
         }
     }
 }

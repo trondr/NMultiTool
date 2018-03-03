@@ -90,6 +90,7 @@
     <Compile Include="Module\Commands\ConvertAllSvgToIco\ConvertAllSvgToIcoCommandProvider.cs" />
     <Compile Include="Module\Commands\ConvertAllSvgToIco\IconFileInfo.cs" />
     <Compile Include="Module\Commands\ConvertAllSvgToIco\IConvertAllSvgToIcoCommandProvider.cs" />
+    <Compile Include="Module\Commands\ConvertAllSvgToIco\IConvertAllSvgToIcoCommandProviderFactory.cs" />
     <Compile Include="Module\Commands\ConvertAllSvgToIco\IProcessProvider.cs" />
     <Compile Include="Module\Commands\ConvertAllSvgToIco\IIconInfoProvider.cs" />
     <Compile Include="Module\Commands\ConvertAllSvgToIco\PngFileInfo.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Module\Commands\ConvertSvgToIco\ConvertSvgToIcoCommandProvider.cs" />
     <Compile Include="Module\Commands\ConvertSvgToIco\IconCreateResult.cs" />
     <Compile Include="Module\Commands\ConvertSvgToIco\IconDefines.cs" />
+    <Compile Include="Module\Commands\ConvertSvgToIco\IConvertSvgToIcoCommandProviderFactory.cs" />
     <Compile Include="Module\Commands\ConvertSvgToIco\IImageMagicProvider.cs" />
     <Compile Include="Module\Commands\ConvertSvgToIco\IInkscapeProvider.cs" />
     <Compile Include="Module\Commands\ConvertSvgToIco\ImageMagicProvider.cs" />
@@ -115,10 +117,13 @@
     <Compile Include="Module\Commands\FindDuplicateFiles\IFindDuplicateFilesCommandProvider.cs" />
     <Compile Include="Module\Commands\Folder2Wxs\ExistingFolderPath.cs" />
     <Compile Include="Module\Commands\Folder2Wxs\Folder2Wxs.cs" />
+    <Compile Include="Module\Commands\Folder2Wxs\Folder2WxsCommandProvider.cs" />
     <Compile Include="Module\Commands\Folder2Wxs\FolderPath.cs" />
     <Compile Include="Module\Commands\Folder2Wxs\HarvestInfo.cs" />
     <Compile Include="Module\Commands\Folder2Wxs\IdFromNameGenerator.cs" />
     <Compile Include="Module\Commands\Folder2Wxs\IFolder2Wxs.cs" />
+    <Compile Include="Module\Commands\Folder2Wxs\IFolder2WxsCommandProvider.cs" />
+    <Compile Include="Module\Commands\Folder2Wxs\IFolder2WxsCommandProviderFactory.cs" />
     <Compile Include="Module\Commands\Folder2Wxs\IIdFromNameGenerator.cs" />
     <Compile Include="Module\Commands\Folder2Wxs\IRandomNumberGenerator.cs" />
     <Compile Include="Module\Commands\Folder2Wxs\RandomNumberGenerator.cs" />
@@ -126,9 +131,13 @@
     <Compile Include="Module\Commands\InstallUtil\FolderFileSearcher.cs" />
     <Compile Include="Module\Commands\InstallUtil\IFolderFileSearcher.cs" />
     <Compile Include="Module\Commands\InstallUtil\IInstallUtil.cs" />
+    <Compile Include="Module\Commands\InstallUtil\IInstallUtilCommandProvider.cs" />
+    <Compile Include="Module\Commands\InstallUtil\IInstallUtilCommandProviderFactory.cs" />
     <Compile Include="Module\Commands\InstallUtil\InstallAction.cs" />
     <Compile Include="Module\Commands\InstallUtil\InstallUtil.cs" />
+    <Compile Include="Module\Commands\InstallUtil\InstallUtilCommandProvider.cs" />
     <Compile Include="Module\Commands\SplitIco\ISplitIcoCommandProvider.cs" />
+    <Compile Include="Module\Commands\SplitIco\ISplitIcoCommandProviderFactory.cs" />
     <Compile Include="Module\Commands\SplitIco\SplitIcoCommandProvider.cs" />
     <Compile Include="Module\Common\Install\IWindowsExplorerContextMenuInstaller.cs" />
     <Compile Include="Module\Common\Install\WindowsExplorerContextMenuInstaller.cs" />
