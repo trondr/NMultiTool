@@ -149,6 +149,7 @@
     <Compile Include="Infrastructure\SingletonAttribute.cs" />
     <Compile Include="Infrastructure\ToDo.cs" />
     <Compile Include="Infrastructure\ToDoPriority.cs" />
+    <Compile Include="Module\Common\Process\ProcessOperation.cs" />
     <Compile Include="Module\Common\Process\IProcess.cs" />
     <Compile Include="Module\Common\Process\Process.cs" />
     <Compile Include="Module\Common\Resources\EmbeddedResource.cs" />

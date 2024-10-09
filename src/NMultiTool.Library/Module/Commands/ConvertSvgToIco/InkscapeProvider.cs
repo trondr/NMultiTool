@@ -2,6 +2,7 @@ using System.Configuration;
 using System.IO;
 using Common.Logging;
 using NMultiTool.Library.Module.Commands.ConvertAllSvgToIco;
+using NMultiTool.Library.Module.Common.Process;
 
 namespace NMultiTool.Library.Module.Commands.ConvertSvgToIco
 {
@@ -20,8 +21,8 @@ namespace NMultiTool.Library.Module.Commands.ConvertSvgToIco
         {
             _logger.InfoFormat("Exporting: {0}->{1}", svgFile.Name, pngFile.Name);
             var incscapeExe = GetInkscapeExe();
-            var arguments = string.Format("-z -e \"{0}\" -w {2} -h {2} \"{1}\" ", pngFile.FullName, svgFile.FullName, pngFile.Size);
-            var exitCode = _processProvider.StartProcess(incscapeExe, arguments);
+            var arguments = string.Format("-o \"{0}\" -w {2} -h {2} \"{1}\" ", pngFile.FullName, svgFile.FullName, pngFile.Size);
+            var exitCode = ProcessOperation.StartConsoleProcess(incscapeExe, arguments, null, -1, null, _logger);
             if (exitCode != 0)
             {
                 throw new NMultiToolException("Failed to export svg to png file. Exit code: " + exitCode);
